@@ -1,0 +1,464 @@
+{
+	"info": {
+		"_postman_id": "0e8cce1c-82e4-4772-8b73-0e44b5b03bce",
+		"name": "DBAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32800475"
+	},
+	"item": [
+		{
+			"name": "/api/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response body is 'Pàgina inicial de l'API'\", function () {\r",
+							"    pm.response.to.have.body(\"Pàgina inicial de l'API (missatge en text pla)\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is text/plain\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/plain\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/hola",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response body is 'Hola món!'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Hola món!\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is text/plain\", function () {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include(\"text/plain\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/hola",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"hola"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/exemples/generar_objecte_a_json_automatic",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Comprova si el codi d'estat de la resposta és 200 OK\r",
+							"pm.test(\"El codi d'estat és 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Comprova si el cos de la resposta té un estat \"OK\"\r",
+							"pm.test(\"L'estat de la resposta és OK\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El missatge és correcte\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Missatge de prova en format JSON\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El camp d'error és null\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.error).to.eql(null);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/exemples/generar_objecte_a_json_automatic",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exemples",
+						"generar_objecte_a_json_automatic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/exemples/generar_json_amb_jsonobject",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Comprova si el codi d'estat de la resposta és 200 OK\r",
+							"pm.test(\"El codi d'estat és 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Comprova si el cos de la resposta té un estat \"OK\"\r",
+							"pm.test(\"L'estat de la resposta és OK\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El missatge és correcte\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Missatge de prova en format JSON\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/exemples/generar_json_amb_jsonobject",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exemples",
+						"generar_json_amb_jsonobject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/exemples/generar_json_amb_jackson",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Comprova si el codi d'estat de la resposta és 200 OK\r",
+							"pm.test(\"El codi d'estat és 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Comprova si el cos de la resposta té un estat \"OK\"\r",
+							"pm.test(\"L'estat de la resposta és OK\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"El missatge és correcte\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Missatge de prova en format JSON\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/exemples/generar_json_amb_jackson",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exemples",
+						"generar_json_amb_jackson"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/exemples/obtenir_imatge",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/exemples/obtenir_imatge",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exemples",
+						"obtenir_imatge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/exemples/validar-token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "elTeuTokenSecret",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/exemples/validar-token",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exemples",
+						"validar-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/exemples/configuracions/afegir_configuracio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Comprova si el codi d'estat de la resposta és 200 OK\r",
+							"pm.test(\"El codi d'estat és 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Comprova si el cos de la resposta té un estat \"OK\"\r",
+							"pm.test(\"L'estat de la resposta és OK\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"OK\");\r",
+							"});\r",
+							"\r",
+							"// Comprova si el missatge és \"Configuració afegida o trobada amb èxit\"\r",
+							"pm.test(\"El missatge és el esperat\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Configuració afegida o trobada amb èxit\");\r",
+							"});\r",
+							"\r",
+							"// Comprova si \"data\" conté \"id\" i \"nom\"\r",
+							"pm.test(\"Data conté id i nom\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.have.property(\"id\");\r",
+							"    pm.expect(jsonData.data).to.have.property(\"nom\");\r",
+							"    pm.expect(jsonData.data.nom).to.be.a(\"string\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nom\": \"Configuració d'exemple\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exemples/configuracions/afegir_configuracio",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exemples",
+						"configuracions",
+						"afegir_configuracio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/exemples/configuracions/afegir_propietat_a_configuracio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Comprova si el codi d'estat de la resposta és 200 OK\r",
+							"pm.test(\"El codi d'estat és 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Comprova si el cos de la resposta té un estat \"OK\"\r",
+							"pm.test(\"L'estat de la resposta és OK\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"OK\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"clau\": \"novaClau2\",\r\n  \"valor\": \"nouValo2\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exemples/configuracions/afegir_propietat_a_configuracio/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exemples",
+						"configuracions",
+						"afegir_propietat_a_configuracio",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/exemples/configuracions/eliminar_propietat_de_configuracio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Comprova si el codi d'estat de la resposta és 200 OK\r",
+							"pm.test(\"El codi d'estat és 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Comprova si el cos de la resposta té un estat \"OK\"\r",
+							"pm.test(\"L'estat de la resposta és OK\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"OK\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/exemples/configuracions/eliminar_propietat_de_configuracio/1/novaClau2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exemples",
+						"configuracions",
+						"eliminar_propietat_de_configuracio",
+						"1",
+						"novaClau2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8080",
+			"type": "string"
+		}
+	]
+}
