@@ -1,8 +1,7 @@
 package cat.iesesteveterradas.dbapi;
 
-import cat.iesesteveterradas.dbapi.persistencia.Configuracio;
-import cat.iesesteveterradas.dbapi.persistencia.ConfiguracioDAO;
-import cat.iesesteveterradas.dbapi.persistencia.Propietat;
+import cat.iesesteveterradas.dbapi.persistencia.Usuaris;
+import cat.iesesteveterradas.dbapi.persistencia.Peticions;
 import cat.iesesteveterradas.dbapi.persistencia.SessionFactoryManager;
 
 import org.apache.commons.cli.CommandLine;
@@ -26,9 +25,9 @@ public class AppMain {
     private static String baseURI;
 
     public static void iniciarHibernate(){
-        Configuracio configuracio = ConfiguracioDAO.trobaOCreaConfiguracioPerNom("Configuració 1");
-        Propietat propietat = new Propietat("versió", "1.0.1");
-        ConfiguracioDAO.afegeixPropietatAConfiguracio(propietat, configuracio);
+        //Usuaris configuracio = ConfiguracioDAO.trobaOCreaConfiguracioPerNom("Configuració 1");
+        //Propietat propietat = new Propietat("versió", "1.0.1");
+        //ConfiguracioDAO.afegeixPropietatAConfiguracio(propietat, configuracio);
     }
 
     public static HttpServer iniciarServidorAPI(String host, int port) {

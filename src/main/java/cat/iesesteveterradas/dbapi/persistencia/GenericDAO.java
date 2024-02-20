@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GenericDAO {
-    private static final Logger logger = LoggerFactory.getLogger(ConfiguracioDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
 
    public static <T> T getById(Class<? extends T> clazz, long id){
         Session session = SessionFactoryManager.getSessionFactory().openSession();
