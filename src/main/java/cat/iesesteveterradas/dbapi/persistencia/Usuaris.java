@@ -11,7 +11,7 @@ public class Usuaris {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String telèfon;
+    private String telefon;
     private String nickname;
     private String email;
 
@@ -19,8 +19,8 @@ public class Usuaris {
     public Usuaris() {
     }
 
-    public Usuaris(String telèfon, String nickname, String email) {
-        this.telèfon = telèfon;
+    public Usuaris(String telefon, String nickname, String email) {
+        this.telefon = telefon;
         this.nickname = nickname;
         this.email = email;
     }
@@ -34,12 +34,12 @@ public class Usuaris {
         this.id = id;
     }
 
-    public String getTelèfon() {
-        return telèfon;
+    public String getTelefon() {
+        return telefon;
     }
 
-    public void setTelèfon(String telèfon) {
-        this.telèfon = telèfon;
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
     }
 
     public String getNickname() {
@@ -62,7 +62,7 @@ public class Usuaris {
     public String toString() {
         return "Usuaris{" +
                 "id=" + id +
-                ", telèfon='" + telèfon + '\'' +
+                ", telefon='" + telefon + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", email='" + email + '\'' +
                 '}';
