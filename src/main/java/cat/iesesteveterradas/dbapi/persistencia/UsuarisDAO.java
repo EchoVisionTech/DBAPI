@@ -18,6 +18,7 @@ public class UsuarisDAO {
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
             Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE telefon = :telefon AND nickname = :nickname AND email = :email", Usuaris.class);
+            
             query.setParameter("telefon", telefon);
             query.setParameter("nickname", nickname);
             query.setParameter("email", email);

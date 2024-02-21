@@ -1,7 +1,9 @@
 package cat.iesesteveterradas.dbapi;
 
 import cat.iesesteveterradas.dbapi.persistencia.Usuaris;
+import cat.iesesteveterradas.dbapi.persistencia.UsuarisDAO;
 import cat.iesesteveterradas.dbapi.persistencia.Peticions;
+import cat.iesesteveterradas.dbapi.persistencia.PeticionsDAO;
 import cat.iesesteveterradas.dbapi.persistencia.SessionFactoryManager;
 
 import org.apache.commons.cli.CommandLine;
@@ -25,9 +27,9 @@ public class AppMain {
     private static String baseURI;
 
     public static void iniciarHibernate(){
-        //Usuaris configuracio = ConfiguracioDAO.trobaOCreaConfiguracioPerNom("Configuració 1");
-        //Propietat propietat = new Propietat("versió", "1.0.1");
-        //ConfiguracioDAO.afegeixPropietatAConfiguracio(propietat, configuracio);
+        Usuaris usuari = UsuarisDAO.trobaORegistreUsuaris("650293516", "Nick", "test@correo.com");
+        Peticions peticio = PeticionsDAO.trobaOCreaPeticions("mistral", "Test from database", "Img base64");
+        
     }
 
     public static HttpServer iniciarServidorAPI(String host, int port) {
