@@ -31,13 +31,13 @@ public class PeticionsResource {
             JSONObject input = new JSONObject(jsonInput);
             String model = input.optString("model", null);
             String prompt = input.optString("prompt", null);
-            String imatges = input.optString("imatges", null);
+            String imatge = input.optString("imatge", null);
 
-            if (model == null || model.trim().isEmpty() || prompt == null || prompt.trim().isEmpty() || imatges == null || imatges.trim().isEmpty()) {
+            if (model == null || model.trim().isEmpty() || prompt == null || prompt.trim().isEmpty() || imatge == null || imatge.trim().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
 
-            Peticions novaPeticio = PeticionsDAO.trobaOCreaPeticions(model, prompt, imatges);
+            Peticions novaPeticio = PeticionsDAO.trobaOCreaPeticions(model, prompt, imatge);
 
             // Prepara la resposta amb la nova configuració
             JSONObject jsonResponse = new JSONObject();
@@ -47,7 +47,7 @@ public class PeticionsResource {
             jsonData.put("id", novaPeticio.getId());
             jsonData.put("model", novaPeticio.getModel());
             jsonData.put("prompt", novaPeticio.getPrompt());
-            jsonData.put("imatges", novaPeticio.getImatges());
+            jsonData.put("imatge", novaPeticio.getImatge());
             jsonResponse.put("data", jsonData);
 
             // Retorna la resposta

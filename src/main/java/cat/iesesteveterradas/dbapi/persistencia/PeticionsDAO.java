@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public class PeticionsDAO {
     private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
 
-    public static Peticions trobaOCreaPeticions(String model, String prompt, String imatges) {
+    public static Peticions trobaOCreaPeticions(String model, String prompt, String imatge) {
         Session session = SessionFactoryManager.getSessionFactory().openSession();
         Transaction tx = null;
         Peticions peticio = null;
@@ -20,11 +20,10 @@ public class PeticionsDAO {
             Query<Peticions> query = session.createQuery("FROM Peticions WHERE model = :model AND prompt = :prompt", Peticions.class);
             query.setParameter("model", model);
             query.setParameter("prompt", prompt);
-            query.setParameter("imatges", imatges);
             peticio = query.uniqueResult();
             // Si no es troba, crea una nova configuració
             if (peticio == null) {
-                peticio = new Peticions(model, prompt, imatges);
+                peticio = new Peticions(model, prompt, imatge);
                 session.save(peticio);
                 tx.commit();
                 logger.info("Nova peticio creada amb el model: {}, prompt: {}, imatge:(Codi Base64)", model, prompt);
