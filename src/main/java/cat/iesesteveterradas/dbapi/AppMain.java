@@ -27,9 +27,6 @@ public class AppMain {
     private static String baseURI;
 
     public static void iniciarHibernate(){
-        Usuaris usuari = UsuarisDAO.trobaORegistreUsuaris("650293516", "Nick", "test@correo.com");
-        Peticions peticio = PeticionsDAO.trobaOCreaPeticions("mistral", "Test from database", "Img base64");
-        
     }
 
     public static HttpServer iniciarServidorAPI(String host, int port) {

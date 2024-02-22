@@ -17,6 +17,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.Base64;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 @Path("/api/peticions")
@@ -31,13 +32,21 @@ public class PeticionsResource {
             JSONObject input = new JSONObject(jsonInput);
             String model = input.optString("model", null);
             String prompt = input.optString("prompt", null);
-            String imatge = input.optString("imatge", null);
+            JSONArray imatgesArray = input.optJSONArray("imatges");
+            String[] imatges = null;
 
-            if (model == null || model.trim().isEmpty() || prompt == null || prompt.trim().isEmpty() || imatge == null || imatge.trim().isEmpty()) {
+            if (imatgesArray != null) {
+                imatges = new String[imatgesArray.length()];
+                for (int i = 0; i < imatgesArray.length(); i++) {
+                    imatges[i] = imatgesArray.optString(i);
+                }
+            }
+
+            if (model == null || model.trim().isEmpty() || prompt == null || prompt.trim().isEmpty() || imatges == null || imatges.length == 0) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
 
-            Peticions novaPeticio = PeticionsDAO.trobaOCreaPeticions(model, prompt, imatge);
+            Peticions novaPeticio = PeticionsDAO.trobaOCreaPeticions(model, prompt, imatges);
 
             // Prepara la resposta amb la nova configuració
             JSONObject jsonResponse = new JSONObject();
@@ -47,7 +56,7 @@ public class PeticionsResource {
             jsonData.put("id", novaPeticio.getId());
             jsonData.put("model", novaPeticio.getModel());
             jsonData.put("prompt", novaPeticio.getPrompt());
-            jsonData.put("imatge", novaPeticio.getImatge());
+            jsonData.put("imatges", novaPeticio.getImatges());
             jsonResponse.put("data", jsonData);
 
             // Retorna la resposta

@@ -12,16 +12,16 @@ public class Peticions {
     private Long id;
 
     private String prompt;
-    private String imatge;
+    private String[] imatges;
     private String model;
 
     // Constructors
     public Peticions() {
     }
 
-    public Peticions(String prompt, String imatge, String model) {
+    public Peticions(String model, String prompt, String[] imatges) {
         this.prompt = prompt;
-        this.imatge = imatge;
+        this.imatges = imatges;
         this.model = model;
     }
 
@@ -42,12 +42,12 @@ public class Peticions {
         this.prompt = prompt;
     }
 
-    public String getImatge() {
-        return imatge;
+    public String[] getImatges() {
+        return imatges;
     }
 
-    public void setImatge(String imatge) {
-        this.imatge = imatge;
+    public void setImatges(String[] imatges) {
+        this.imatges = imatges;
     }
 
     public String getModel() {
@@ -63,7 +63,7 @@ public class Peticions {
         return "Peticions{" +
                 "id=" + id +
                 ", prompt='" + prompt + '\'' +
-                ", imatge='" + imatge + '\'' +
+                ", imatges='" + imatges + '\'' +
                 ", model='" + model + '\'' +
                 '}';
     }
