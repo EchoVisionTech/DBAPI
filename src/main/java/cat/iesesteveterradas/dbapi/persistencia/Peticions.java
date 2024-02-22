@@ -11,7 +11,7 @@ public class Peticions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String prompts;
+    private String prompt;
     private String imatges;
     private String model;
 
@@ -19,8 +19,8 @@ public class Peticions {
     public Peticions() {
     }
 
-    public Peticions(String prompts, String imatges, String model) {
-        this.prompts = prompts;
+    public Peticions(String prompt, String imatges, String model) {
+        this.prompt = prompt;
         this.imatges = imatges;
         this.model = model;
     }
@@ -34,12 +34,12 @@ public class Peticions {
         this.id = id;
     }
 
-    public String getPrompts() {
-        return prompts;
+    public String getPrompt() {
+        return prompt;
     }
 
-    public void setPrompts(String prompts) {
-        this.prompts = prompts;
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
     }
 
     public String getImatges() {
@@ -62,7 +62,7 @@ public class Peticions {
     public String toString() {
         return "Peticions{" +
                 "id=" + id +
-                ", prompts='" + prompts + '\'' +
+                ", prompt='" + prompt + '\'' +
                 ", imatges='" + imatges + '\'' +
                 ", model='" + model + '\'' +
                 '}';
