@@ -25,8 +25,9 @@ public class AppMain {
     private static final Logger logger = LoggerFactory.getLogger(AppMain.class);
     // URI base on el servidor HTTP de Grizzly escoltarà
     private static String baseURI;
-
+    static String[] testimg = {"img1", "img2"};
     public static void iniciarHibernate(){
+        Peticions peticio = PeticionsDAO.trobaOCreaPeticions("Llava", "Test prompt", testimg );
     }
 
     public static HttpServer iniciarServidorAPI(String host, int port) {
@@ -72,7 +73,7 @@ public class AppMain {
 
             logger.info("Iniciant el servidor...");
             final HttpServer server = iniciarServidorAPI(host, port);
-            
+
 
             logger.info(String.format("App Jersey iniciada amb WADL disponible a "
                     + "%sapplication.wadl\nPrèmer \"Enter\" per aturar-lo...", baseURI));
