@@ -15,6 +15,7 @@ public class PeticionsDAO {
         Transaction tx = null;
         Peticions peticio = null;
         try {
+            System.err.println("Reaches petition creation");
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
             Query<Peticions> query = session.createQuery("FROM Peticions WHERE model = :model AND prompt = :prompt", Peticions.class);
@@ -30,6 +31,7 @@ public class PeticionsDAO {
             } else {
                 logger.info("Petició ja existent amb el model: {} i prompt: {}", model, prompt);
             }
+            System.err.println("Reaches petition end");
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             logger.error("Error al crear o trobar la petició", e);

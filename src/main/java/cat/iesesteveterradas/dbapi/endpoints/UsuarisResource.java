@@ -21,7 +21,7 @@ import java.util.Base64;
 
 import org.json.JSONObject;
 
-@Path("/api/usuaris")
+@Path("/usuaris")
 public class UsuarisResource {
 
     @POST

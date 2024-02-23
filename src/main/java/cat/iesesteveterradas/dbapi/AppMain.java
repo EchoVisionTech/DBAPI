@@ -72,6 +72,7 @@ public class AppMain {
 
             logger.info("Iniciant el servidor...");
             final HttpServer server = iniciarServidorAPI(host, port);
+            
 
             logger.info(String.format("App Jersey iniciada amb WADL disponible a "
                     + "%sapplication.wadl\nPrèmer \"Enter\" per aturar-lo...", baseURI));

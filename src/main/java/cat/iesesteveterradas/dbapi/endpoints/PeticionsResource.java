@@ -2,25 +2,17 @@ package cat.iesesteveterradas.dbapi.endpoints;
 
 import cat.iesesteveterradas.dbapi.persistencia.Peticions;
 import cat.iesesteveterradas.dbapi.persistencia.PeticionsDAO;
-import cat.iesesteveterradas.dbapi.respostes.RespostaBasica;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-@Path("/api/peticions")
+@Path("/peticions")
 public class PeticionsResource {
 
     @POST
