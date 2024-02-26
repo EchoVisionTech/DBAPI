@@ -10,27 +10,24 @@ import org.slf4j.LoggerFactory;
 public class UsuarisDAO {
     private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
 
-    public static Usuaris trobaORegistreUsuaris(String telefon, String nickname, String email) {
+    public static Usuaris trobaORegistreUsuaris(String telefon, String nickname, String email, String codi_validacio) {
         Session session = SessionFactoryManager.getSessionFactory().openSession();
         Transaction tx = null;
         Usuaris usuari = null;
         try {
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
-            Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE telefon = :telefon AND nickname = :nickname AND email = :email", Usuaris.class);
-            
+            Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE telefon = :telefon", Usuaris.class);
             query.setParameter("telefon", telefon);
-            query.setParameter("nickname", nickname);
-            query.setParameter("email", email);
             usuari = query.uniqueResult();
             // Si no es troba, crea una nova configuració
             if (usuari == null) {
-                usuari = new Usuaris(telefon, nickname, email);
+                usuari = new Usuaris(telefon, nickname, email, codi_validacio);
                 session.save(usuari);
                 tx.commit();
-                logger.info("Nova peticio creada amb el telefon: {}, nickname: {}, email: {}", telefon, nickname, email);
+                logger.info("Nova peticio creada amb el telefon: {}, nickname: {}, email: {}, codi_validacio: {}", telefon, nickname, email, codi_validacio);
             } else {
-                logger.info("Petició ja existent amb el telefon: {} i nickname: {}, email: {}", telefon, nickname, email);
+                logger.info("Petició ja existent amb el telefon: {}", telefon);
             }
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();

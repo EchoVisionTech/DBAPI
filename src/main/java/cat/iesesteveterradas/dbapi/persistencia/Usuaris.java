@@ -16,8 +16,8 @@ public class Usuaris {
     private String telefon;
     private String nickname;
     private String email;
-    private String API_KEY; // New field for API Key
-    private int codi_validacio; // New field for validation code
+    private String API_KEY;
+    private String codi_validacio;
 
     @ManyToOne
     private Grup grup; // Reference to the Group table (Many-to-One)
@@ -29,7 +29,7 @@ public class Usuaris {
     public Usuaris() {
     }
 
-    public Usuaris(String telefon, String nickname, String email, String API_KEY, int codi_validacio, Grup grup, Pla pla) {
+    public Usuaris(String telefon, String nickname, String email, String API_KEY, String codi_validacio, Grup grup, Pla pla) {
         this.telefon = telefon;
         this.nickname = nickname;
         this.email = email;
@@ -39,10 +39,11 @@ public class Usuaris {
         this.pla = pla;
     }
 
-    public Usuaris(String telefon, String nickname, String email) {
+    public Usuaris(String telefon, String nickname, String email, String codi_validacio) {
         this.telefon = telefon;
         this.nickname = nickname;
         this.email = email;
+        this.codi_validacio = codi_validacio;
     }
 
     // Getters and setters
@@ -86,11 +87,11 @@ public class Usuaris {
         this.API_KEY = API_KEY;
     }
 
-    public int getCodi_validacio() {
+    public String getCodi_validacio() {
         return codi_validacio;
     }
 
-    public void setCodi_validacio(int codi_validacio) {
+    public void setCodi_validacio(String codi_validacio) {
         this.codi_validacio = codi_validacio;
     }
 

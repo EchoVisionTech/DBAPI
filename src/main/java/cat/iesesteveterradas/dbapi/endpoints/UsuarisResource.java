@@ -34,22 +34,23 @@ public class UsuarisResource {
             String telefon = input.optString("telefon", null);
             String nickname = input.optString("nickname", null);
             String email = input.optString("email", null);
+            String codi_validacio = input.optString("codi_validacio", null);
 
-            if (telefon == null || telefon.trim().isEmpty() || nickname == null || nickname.trim().isEmpty() || email == null || email.trim().isEmpty()) {
+            if (telefon == null || telefon.trim().isEmpty() || nickname == null || nickname.trim().isEmpty() || email == null || email.trim().isEmpty() || codi_validacio == null || codi_validacio.trim().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
 
-            Usuaris nouUsuari = UsuarisDAO.trobaORegistreUsuaris(telefon, nickname, email);
+            Usuaris nouUsuari = UsuarisDAO.trobaORegistreUsuaris(telefon, nickname, email, codi_validacio);
 
             // Prepara la resposta amb la nova configuració
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("status", "OK");
-            jsonResponse.put("message", "Usuari registrat o trobat amb èxit");
+            jsonResponse.put("message", "L'usuari s'ha creat correctament");
             JSONObject jsonData = new JSONObject();
-            jsonData.put("id", nouUsuari.getId());
             jsonData.put("telefon", nouUsuari.getTelefon());
             jsonData.put("nickname", nouUsuari.getNickname());
             jsonData.put("email", nouUsuari.getEmail());
+            jsonData.put("codi_validacio", nouUsuari.getCodi_validacio());
             jsonResponse.put("data", jsonData);
 
             // Retorna la resposta
