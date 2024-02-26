@@ -13,17 +13,17 @@ public class Grup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String groupName;
+    private String grupName;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "grup")
     private List<Usuaris> users;
 
     // Constructors
     public Grup() {
     }
 
-    public Grup(String groupName) {
-        this.groupName = groupName;
+    public Grup(String grupName) {
+        this.grupName = grupName;
     }
 
     // Getters and setters
@@ -35,12 +35,12 @@ public class Grup {
         this.id = id;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getgrupName() {
+        return grupName;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setgrupName(String grupName) {
+        this.grupName = grupName;
     }
 
     public List<Usuaris> getUsers() {
@@ -55,7 +55,7 @@ public class Grup {
     public String toString() {
         return "Grup{" +
                 "id=" + id +
-                ", groupName='" + groupName + '\'' +
+                ", grupName='" + grupName + '\'' +
                 '}';
     }
 }
