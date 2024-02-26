@@ -30,5 +30,7 @@
         <!-- Specify the mapping resources -->
         <mapping class="cat.iesesteveterradas.dbapi.persistencia.Usuaris"/>
         <mapping class="cat.iesesteveterradas.dbapi.persistencia.Peticions"/>
+        <mapping class="cat.iesesteveterradas.dbapi.persistencia.Grup"/>
+        <mapping class="cat.iesesteveterradas.dbapi.persistencia.Pla"/>
     </session-factory>
 </hibernate-configuration>

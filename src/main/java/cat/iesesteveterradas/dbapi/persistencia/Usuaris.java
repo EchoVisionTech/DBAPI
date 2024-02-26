@@ -17,24 +17,26 @@ public class Usuaris {
     private String nickname;
     private String email;
     private String API_KEY; // New field for API Key
+    private int codi_validacio; // New field for validation code
 
     @ManyToOne
-    private Grup group; // Reference to the Group table (Many-to-One)
+    private Grup grup; // Reference to the Group table (Many-to-One)
 
     @OneToOne
-    private Pla plan; // Reference to the Plan table (One-to-One)
+    private Pla pla; // Reference to the Plan table (One-to-One)
 
     // Constructors
     public Usuaris() {
     }
 
-    public Usuaris(String telefon, String nickname, String email, String API_KEY, Grup group, Pla plan) {
+    public Usuaris(String telefon, String nickname, String email, String API_KEY, int codi_validacio, Grup grup, Pla pla) {
         this.telefon = telefon;
         this.nickname = nickname;
         this.email = email;
         this.API_KEY = API_KEY;
-        this.group = group;
-        this.plan = plan;
+        this.codi_validacio = codi_validacio;
+        this.grup = grup;
+        this.pla = pla;
     }
 
     public Usuaris(String telefon, String nickname, String email) {
@@ -84,20 +86,28 @@ public class Usuaris {
         this.API_KEY = API_KEY;
     }
 
-    public Grup getGroup() {
-        return group;
+    public int getCodi_validacio() {
+        return codi_validacio;
     }
 
-    public void setGroup(Grup group) {
-        this.group = group;
+    public void setCodi_validacio(int codi_validacio) {
+        this.codi_validacio = codi_validacio;
     }
 
-    public Pla getPlan() {
-        return plan;
+    public Grup getGrup() {
+        return grup;
     }
 
-    public void setPlan(Pla plan) {
-        this.plan = plan;
+    public void setGrup(Grup grup) {
+        this.grup = grup;
+    }
+
+    public Pla getPla() {
+        return pla;
+    }
+
+    public void setPla(Pla pla) {
+        this.pla = pla;
     }
 
     @Override
@@ -108,8 +118,9 @@ public class Usuaris {
                 ", nickname='" + nickname + '\'' +
                 ", email='" + email + '\'' +
                 ", API_KEY='" + API_KEY + '\'' +
-                ", group=" + group +
-                ", plan=" + plan +
+                ", codi_validacio=" + codi_validacio +
+                ", grup=" + grup +
+                ", pla=" + pla +
                 '}';
     }
 }
