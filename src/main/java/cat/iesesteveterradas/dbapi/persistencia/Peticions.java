@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.util.Date;
 
 @Entity
 public class Peticions {
@@ -14,15 +15,17 @@ public class Peticions {
     private String prompt;
     private String[] imatges;
     private String model;
+    private Date data_peticio; // New field for the date when the petition was made
 
     // Constructors
     public Peticions() {
     }
 
-    public Peticions(String model, String prompt, String[] imatges) {
+    public Peticions(String model, String prompt, String[] imatges, Date data_peticio) {
         this.prompt = prompt;
         this.imatges = imatges;
         this.model = model;
+        this.data_peticio = data_peticio;
     }
 
     // Getters and setters
@@ -58,6 +61,14 @@ public class Peticions {
         this.model = model;
     }
 
+    public Date getData_peticio() {
+        return data_peticio;
+    }
+
+    public void setData_peticio(Date data_peticio) {
+        this.data_peticio = data_peticio;
+    }
+
     @Override
     public String toString() {
         return "Peticions{" +
@@ -65,6 +76,7 @@ public class Peticions {
                 ", prompt='" + prompt + '\'' +
                 ", imatges='" + imatges + '\'' +
                 ", model='" + model + '\'' +
+                ", data_peticio='" + data_peticio + '\'' +
                 '}';
     }
 }

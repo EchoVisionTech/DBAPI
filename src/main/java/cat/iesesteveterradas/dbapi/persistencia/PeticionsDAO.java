@@ -1,5 +1,7 @@
 package cat.iesesteveterradas.dbapi.persistencia;
 
+import java.util.Date;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -24,7 +26,8 @@ public class PeticionsDAO {
             peticio = query.uniqueResult();
             // Si no es troba, crea una nova configuració
             if (peticio == null) {
-                peticio = new Peticions(model, prompt, imatges);
+                Date data_actual = new Date();
+                peticio = new Peticions(model, prompt, imatges, data_actual);
                 session.save(peticio);
                 tx.commit();
                 logger.info("Nova peticio creada amb el model: {}, prompt: {}, imatges:(Codi Base64)", model, prompt);
