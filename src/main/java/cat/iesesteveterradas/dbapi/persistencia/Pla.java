@@ -15,7 +15,7 @@ public class Pla {
     private String plaName;
     private int quota;
 
-    @OneToOne(mappedBy = "plan")
+    @OneToOne(mappedBy = "pla")
     private Usuaris user;
 
     // Constructors
