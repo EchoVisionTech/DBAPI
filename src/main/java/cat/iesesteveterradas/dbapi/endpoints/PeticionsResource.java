@@ -32,17 +32,24 @@ public class PeticionsResource {
             String[] imatges = null;
             String[] imatgesPath = null; 
 
+
+            System.out.println("Code got here 1");
+
+
             if (imatgesArray != null) {
                 imatges = new String[imatgesArray.length()];
                 imatgesPath = new String[imatgesArray.length()]; 
                 for (int i = 0; i < imatgesArray.length(); i++) {
                     imatges[i] = imatgesArray.optString(i);
 
+                    System.out.println(imatges[i]);
+
                     // Decode the base64 string to binary data
                     byte[] imageBytes = Base64.getDecoder().decode(imatges[i]);
 
                     // Write the binary data to a JPG file
                     String fileName = "image" + i + ".jpg";
+                    System.out.println(fileName);
                     java.nio.file.Path imagePath = Paths.get(DIRECTORY_PATH + fileName); 
                     Files.write(imagePath, imageBytes);
 
