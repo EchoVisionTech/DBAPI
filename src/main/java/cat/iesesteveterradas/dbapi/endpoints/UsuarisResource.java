@@ -60,5 +60,38 @@ public class UsuarisResource {
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir el usuari a la base de dades\"}").build();
         }
     }
+
+
+    @POST
+    @Path("/validar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response ValidarUsuari(String jsonInput) {
+        try {
+            JSONObject input = new JSONObject(jsonInput);
+            String telefon = input.optString("telefon", null);
+            String codi_validacio = input.optString("codi_validacio", null);
+
+            if (telefon == null || telefon.trim().isEmpty() || codi_validacio == null || codi_validacio.trim().isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
+            }
+
+            String API_KEY = UsuarisDAO.validarUsuari(telefon, codi_validacio);
+
+            // Prepara la resposta amb la nova configuració
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("status", "OK");
+            jsonResponse.put("message", "L'usuari s'ha validat correctament");
+            JSONObject jsonData = new JSONObject();
+            jsonData.put("api_key", API_KEY);
+            jsonResponse.put("data", jsonData);
+
+            // Retorna la resposta
+            String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            return Response.ok(prettyJsonResponse).build();
+        } catch (Exception e) {
+            return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir el usuari a la base de dades\"}").build();
+        }
+    }
 }
 
