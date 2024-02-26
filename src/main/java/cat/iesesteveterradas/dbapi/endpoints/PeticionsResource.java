@@ -38,6 +38,8 @@ public class PeticionsResource {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
 
+
+
             Peticions novaPeticio = PeticionsDAO.trobaOCreaPeticions(model, prompt, imatges);
 
             // Prepara la resposta amb la nova configuració
@@ -46,9 +48,6 @@ public class PeticionsResource {
             jsonResponse.put("message", "Peticio afegida o trobada amb èxit");
             JSONObject jsonData = new JSONObject();
             jsonData.put("id", novaPeticio.getId());
-            jsonData.put("model", novaPeticio.getModel());
-            jsonData.put("prompt", novaPeticio.getPrompt());
-            jsonData.put("imatges", novaPeticio.getImatges());
             jsonResponse.put("data", jsonData);
 
             // Retorna la resposta
