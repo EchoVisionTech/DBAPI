@@ -17,7 +17,7 @@ import java.util.Base64;
 @Path("/peticions")
 public class PeticionsResource {
 
-    private static final String DIRECTORY_PATH = "/DBAPI/data/imatges/";
+    private static final String DIRECTORY_PATH = "/var/DBAPI/imatges/";
 
     @POST
     @Path("/afegir")
@@ -44,9 +44,7 @@ public class PeticionsResource {
                     // Write the binary data to a JPG file
                     String fileName = "image" + i + ".jpg";
                     java.nio.file.Path imagePath = Paths.get(DIRECTORY_PATH + fileName); 
-                    System.out.println("Before saving image");
                     Files.write(imagePath, imageBytes);
-                    System.out.println("After saving image");
 
                     // Store the image path
                     imatgesPath[i] = imagePath.toString();
