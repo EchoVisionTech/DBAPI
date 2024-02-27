@@ -42,4 +42,23 @@ public class PeticionsDAO {
         return peticio;
     }
 
+    public static Peticions getPeticio(int id_peticio) {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        Peticions peticio = null;
+        try {
+            tx = session.beginTransaction();
+            // Intenta trobar una configuració existent amb el nom donat
+            Query<Peticions> query = session.createQuery("FROM Peticions WHERE id = :id", Peticions.class);
+            query.setParameter("id", id_peticio);
+            peticio = query.uniqueResult();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al crear o trobar la petició", e);
+        } finally {
+            session.close();
+        }
+        return peticio;
+    }
+
 }

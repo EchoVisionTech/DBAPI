@@ -15,9 +15,6 @@ public class Pla {
     private String plaName;
     private int quota;
 
-    @OneToOne(mappedBy = "pla")
-    private Usuaris user;
-
     // Constructors
     public Pla() {
     }
@@ -50,14 +47,6 @@ public class Pla {
 
     public void setQuota(int quota) {
         this.quota = quota;
-    }
-
-    public Usuaris getUser() {
-        return user;
-    }
-
-    public void setUser(Usuaris user) {
-        this.user = user;
     }
 
     @Override

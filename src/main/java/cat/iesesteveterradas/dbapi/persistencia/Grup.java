@@ -15,9 +15,6 @@ public class Grup {
     
     private String grupName;
 
-    @OneToMany(mappedBy = "grup")
-    private List<Usuaris> users;
-
     // Constructors
     public Grup() {
     }
@@ -43,13 +40,6 @@ public class Grup {
         this.grupName = grupName;
     }
 
-    public List<Usuaris> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Usuaris> users) {
-        this.users = users;
-    }
 
     @Override
     public String toString() {
