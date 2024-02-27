@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
@@ -15,17 +16,21 @@ public class Peticions {
     private String prompt;
     private String[] imatges;
     private String model;
-    private Date data_peticio; // New field for the date when the petition was made
+    private Date data_peticio;
+
+    @ManyToOne // Many Peticions can be associated with one Usuaris
+    private Usuaris user; // Reference to the Usuaris table (Many-to-One)
 
     // Constructors
     public Peticions() {
     }
 
-    public Peticions(String model, String prompt, String[] imatges, Date data_peticio) {
+    public Peticions(String model, String prompt, String[] imatges, Date data_peticio, Usuaris user) {
         this.prompt = prompt;
         this.imatges = imatges;
         this.model = model;
         this.data_peticio = data_peticio;
+        this.user = user;
     }
 
     // Getters and setters
@@ -69,6 +74,14 @@ public class Peticions {
         this.data_peticio = data_peticio;
     }
 
+    public Usuaris getUser() {
+        return user;
+    }
+
+    public void setUser(Usuaris user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Peticions{" +
@@ -77,6 +90,7 @@ public class Peticions {
                 ", imatges='" + imatges + '\'' +
                 ", model='" + model + '\'' +
                 ", data_peticio='" + data_peticio + '\'' +
+                ", user='" + user + '\'' +
                 '}';
     }
 }

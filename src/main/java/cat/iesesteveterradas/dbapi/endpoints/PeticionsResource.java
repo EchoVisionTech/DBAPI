@@ -1,8 +1,11 @@
 package cat.iesesteveterradas.dbapi.endpoints;
 
+import cat.iesesteveterradas.dbapi.persistencia.GenericDAO;
 import cat.iesesteveterradas.dbapi.persistencia.Peticions;
 import cat.iesesteveterradas.dbapi.persistencia.PeticionsDAO;
+import cat.iesesteveterradas.dbapi.persistencia.Usuaris;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -23,7 +26,17 @@ public class PeticionsResource {
     @Path("/afegir")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response afegirPeticio(String jsonInput) {
+    public Response afegirPeticio(@HeaderParam("Authorization") String authHeader, String jsonInput) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
+        }
+        String token = authHeader.substring(7);
+
+        Usuaris usuari = GenericDAO.validateApiKey(token);
+        if (usuari == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
+        }
+
         try {
             JSONObject input = new JSONObject(jsonInput);
             String model = input.optString("model", null);
@@ -57,7 +70,7 @@ public class PeticionsResource {
 
             // ChatGPT code here
 
-            Peticions novaPeticio = PeticionsDAO.trobaOCreaPeticions(model, prompt, imatgesPath);
+            Peticions novaPeticio = PeticionsDAO.trobaOCreaPeticions(model, prompt, imatgesPath, usuari);
 
             // Prepare the response with the new configuration
             JSONObject jsonResponse = new JSONObject();

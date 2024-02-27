@@ -2,10 +2,12 @@ package cat.iesesteveterradas.dbapi.persistencia;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,5 +82,31 @@ public class GenericDAO {
             txt = txt.substring(1);
         }
         return txt;
-    }    
+    }
+    
+    public static Usuaris validateApiKey(String token) {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        Usuaris usuari = null;
+        try {
+            tx = session.beginTransaction();
+            // Intenta trobar una configuració existent amb el nom donat
+            Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE API_KEY = :token", Usuaris.class);
+            query.setParameter("token", token);
+            usuari = query.uniqueResult();
+            // Si no es troba, crea una nova configuració
+            if (usuari == null) {
+                logger.info("Usuari amb la API {} no existeix.", token);
+                return null;
+            } else {
+                logger.info("Usuari amb la API {} existeix.", token);
+            }
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al crear o trobar la petició", e);
+        } finally {
+            session.close();
+        }
+        return usuari;
+    }
 }
