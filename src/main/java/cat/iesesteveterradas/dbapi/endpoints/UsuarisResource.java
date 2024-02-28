@@ -93,5 +93,38 @@ public class UsuarisResource {
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir el usuari a la base de dades\"}").build();
         }
     }
+
+
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response LoginUsuari(String jsonInput) {
+        try {
+            JSONObject input = new JSONObject(jsonInput);
+            String email = input.optString("email", null);
+            String password = input.optString("password", null);
+
+            if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
+            }
+
+            String API_KEY = UsuarisDAO.loginUsuari(email, password);
+
+            // Prepara la resposta amb la nova configuració
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("status", "OK");
+            jsonResponse.put("message", "Usuari autenticat correctament");
+            JSONObject jsonData = new JSONObject();
+            jsonData.put("api_key", API_KEY);
+            jsonResponse.put("data", jsonData);
+
+            // Retorna la resposta
+            String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            return Response.ok(prettyJsonResponse).build();
+        } catch (Exception e) {
+            return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir el usuari a la base de dades\"}").build();
+        }
+    }
 }
 

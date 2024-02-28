@@ -16,6 +16,7 @@ public class Usuaris {
     private String telefon;
     private String nickname;
     private String email;
+    private String password;
     private String API_KEY;
     private String codi_validacio;
 
@@ -29,10 +30,11 @@ public class Usuaris {
     public Usuaris() {
     }
 
-    public Usuaris(String telefon, String nickname, String email, String API_KEY, String codi_validacio, Grup grup, Pla pla) {
+    public Usuaris(String telefon, String nickname, String email, String password, String API_KEY, String codi_validacio, Grup grup, Pla pla) {
         this.telefon = telefon;
         this.nickname = nickname;
         this.email = email;
+        this.password = password;
         this.API_KEY = API_KEY;
         this.codi_validacio = codi_validacio;
         this.grup = grup;
@@ -77,6 +79,14 @@ public class Usuaris {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAPI_KEY() {

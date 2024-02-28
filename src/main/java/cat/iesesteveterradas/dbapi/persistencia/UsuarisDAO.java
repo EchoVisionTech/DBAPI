@@ -78,4 +78,37 @@ public class UsuarisDAO {
         return API_KEY;
     }
 
+
+    public static String loginUsuari(String email, String password) {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        Usuaris usuari = null;
+        String API_KEY = null;
+        try {
+            tx = session.beginTransaction();
+            // Intenta trobar una configuració existent amb el nom donat
+            Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE email = :email AND password = :password", Usuaris.class);
+            query.setParameter("email", email);
+            usuari = query.uniqueResult();
+            // Si no es troba, crea una nova configuració
+            if (usuari == null) {
+                logger.info("Usuari amb email: {} no existeix o el email introduit es invalid", email);
+                return null;
+            } else {
+                if (usuari.getPassword() == password) {
+                    API_KEY = usuari.getAPI_KEY();
+                    logger.info("Usuari amb email: {} i password: {} validat correctament", email, password);
+                } else {
+                    logger.info("La contrasenya introduida per al usuari amb email: {} es incorrecte", email);
+                }
+            }
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al validar l'usuari", e);
+        } finally {
+            session.close();
+        }
+        return API_KEY;
+    }
+
 }
