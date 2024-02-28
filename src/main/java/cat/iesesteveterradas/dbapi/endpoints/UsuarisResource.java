@@ -108,9 +108,7 @@ public class UsuarisResource {
             if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
-            System.out.println("Antes de validacion");
             String API_KEY = UsuarisDAO.loginUsuari(email, password);
-            System.out.println("despues de validacion " + API_KEY);
 
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("status", "OK");
@@ -121,7 +119,6 @@ public class UsuarisResource {
 
             // Retorna la resposta
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
-            System.out.println(prettyJsonResponse);
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en autenticar el usuari\"}").build();

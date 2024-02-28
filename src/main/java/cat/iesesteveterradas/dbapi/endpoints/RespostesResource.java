@@ -40,7 +40,7 @@ public class RespostesResource {
         try {
             JSONObject input = new JSONObject(jsonInput);
             System.out.println("Antes de recibir id");
-            Long id_peticio = Long.parseLong(input.optString("id_peticio", null));
+            Long id_peticio = Long.valueOf(input.optInt("id_peticio", 0));
             System.out.println("Despues de recibir id");
             String text_generat = input.optString("text_generat", null);
 
