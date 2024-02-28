@@ -39,7 +39,7 @@ public class RespostesResource {
 
         try {
             JSONObject input = new JSONObject(jsonInput);
-            int id_peticio = input.optInt("id_peticio", 0);
+            Long id_peticio = input.optLong("id_peticio", 0);
             String text_generat = input.optString("text_generat", null);
 
             if (id_peticio == 0 || text_generat == null || text_generat.trim().isEmpty()) {

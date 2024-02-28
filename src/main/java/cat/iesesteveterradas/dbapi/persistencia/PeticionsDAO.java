@@ -42,7 +42,7 @@ public class PeticionsDAO {
         return peticio;
     }
 
-    public static Peticions getPeticio(int id_peticio) {
+    public static Peticions getPeticio(Long id_peticio) {
         Session session = SessionFactoryManager.getSessionFactory().openSession();
         Transaction tx = null;
         Peticions peticio = null;
