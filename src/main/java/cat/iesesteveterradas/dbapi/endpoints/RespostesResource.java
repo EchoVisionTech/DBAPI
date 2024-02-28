@@ -27,6 +27,7 @@ public class RespostesResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response afegirPeticio(@HeaderParam("Authorization") String authHeader, String jsonInput) {
+        System.out.println("Llega la respuesta");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
@@ -37,10 +38,14 @@ public class RespostesResource {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
 
+        System.out.println("Valida la APIKEY");
+
         try {
             JSONObject input = new JSONObject(jsonInput);
             Long id_peticio = input.optLong("id_peticio", 0);
             String text_generat = input.optString("text_generat", null);
+
+            System.out.println("Recoge la info");
 
             if (id_peticio == 0 || text_generat == null || text_generat.trim().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
@@ -50,6 +55,8 @@ public class RespostesResource {
 
             Respostes novaResposta = RespostesDAO.trobaOCreaRespostes(text_generat, peticio, usuari);
 
+            System.out.println("Crea la respuesta");
+
             // Prepare the response with the new configuration
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("status", "OK");
@@ -58,6 +65,8 @@ public class RespostesResource {
             jsonData.put("id", novaResposta.getId());
             jsonData.put("id_peticio", novaResposta.getPeticio().getId());
             jsonResponse.put("data", jsonData);
+
+            System.out.println("Crea respuesta de server");
 
             // Return the response
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
