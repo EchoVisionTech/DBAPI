@@ -48,6 +48,7 @@ public class PeticionsDAO {
         Peticions peticio = null;
         try {
             tx = session.beginTransaction();
+            System.out.println(id_peticio);
             // Intenta trobar una configuració existent amb el nom donat
             Query<Peticions> query = session.createQuery("FROM Peticions WHERE id = :id", Peticions.class);
             query.setParameter("id", id_peticio);

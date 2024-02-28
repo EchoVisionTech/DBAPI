@@ -38,20 +38,18 @@ public class RespostesResource {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
 
-        System.out.println("Valida la APIKEY");
-
         try {
             JSONObject input = new JSONObject(jsonInput);
             Long id_peticio = input.optLong("id_peticio", 0);
             String text_generat = input.optString("text_generat", null);
 
-            System.out.println("Recoge la info");
-
             if (id_peticio == 0 || text_generat == null || text_generat.trim().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
 
+            System.out.println("Antes de guardar peticion");
             Peticions peticio = PeticionsDAO.getPeticio(id_peticio);
+            System.out.println("Despues de guardar peticion");
 
             Respostes novaResposta = RespostesDAO.trobaOCreaRespostes(text_generat, peticio, usuari);
 
