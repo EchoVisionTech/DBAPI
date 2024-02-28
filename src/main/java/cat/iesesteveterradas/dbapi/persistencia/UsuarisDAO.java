@@ -93,15 +93,11 @@ public class UsuarisDAO {
             usuari = query.uniqueResult();
             // Si no es troba, crea una nova configuració
             if (usuari == null) {
-                logger.info("Usuari amb email: {} no existeix o el email introduit es invalid", email);
+                logger.info("Usuari amb email: {} no existeix o la contrasenya es incorrecte", email);
                 return null;
             } else {
-                if (usuari.getPassword() == password) {
-                    API_KEY = usuari.getAPI_KEY();
-                    logger.info("Usuari amb email: {} i password: {} validat correctament", email, password);
-                } else {
-                    logger.info("La contrasenya introduida per al usuari amb email: {} es incorrecte", email);
-                }
+                API_KEY = usuari.getAPI_KEY();
+                logger.info("Usuari amb email: {} i password: {} validat correctament", email, password);
             }
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
