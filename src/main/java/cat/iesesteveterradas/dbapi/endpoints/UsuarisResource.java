@@ -118,10 +118,10 @@ public class UsuarisResource {
             JSONObject jsonData = new JSONObject();
             jsonData.put("api_key", API_KEY);
             jsonResponse.put("data", jsonData);
-            System.out.println(jsonResponse);
 
             // Retorna la resposta
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            System.out.println(prettyJsonResponse);
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en autenticar el usuari\"}").build();
