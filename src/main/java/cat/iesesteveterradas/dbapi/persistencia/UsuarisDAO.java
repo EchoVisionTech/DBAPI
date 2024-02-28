@@ -63,12 +63,10 @@ public class UsuarisDAO {
                     int index = random.nextInt(characters.length());
                     apiKey.append(characters.charAt(index));
                 }
-
+                API_KEY = apiKey.toString();
                 usuari.setAPI_KEY(API_KEY);
                 session.update(usuari); 
                 tx.commit();
-                
-                API_KEY = apiKey.toString();
                 logger.info("API_KEY {} per al usuari amb telefon {} generada correctament", API_KEY, telefon);
             }
         } catch (HibernateException e) {
