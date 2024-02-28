@@ -32,5 +32,6 @@
         <mapping class="cat.iesesteveterradas.dbapi.persistencia.Peticions"/>
         <mapping class="cat.iesesteveterradas.dbapi.persistencia.Grup"/>
         <mapping class="cat.iesesteveterradas.dbapi.persistencia.Pla"/>
+        <mapping class="cat.iesesteveterradas.dbapi.persistencia.Respostes"/>
     </session-factory>
 </hibernate-configuration>
