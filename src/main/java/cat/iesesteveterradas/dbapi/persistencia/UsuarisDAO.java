@@ -89,6 +89,7 @@ public class UsuarisDAO {
             // Intenta trobar una configuració existent amb el nom donat
             Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE email = :email AND password = :password", Usuaris.class);
             query.setParameter("email", email);
+            query.setParameter("password", password);
             usuari = query.uniqueResult();
             // Si no es troba, crea una nova configuració
             if (usuari == null) {
