@@ -27,6 +27,7 @@ public class AppMain {
     private static String baseURI;
     static String[] testimg = {"img1", "img2"};
     public static void iniciarHibernate(){
+        Usuaris usuario = new Usuaris("admin", "admin", "D23qswfSgR6VM9cuTuN");
     }
 
     public static HttpServer iniciarServidorAPI(String host, int port) {

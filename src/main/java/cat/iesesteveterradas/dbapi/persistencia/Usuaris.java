@@ -48,6 +48,12 @@ public class Usuaris {
         this.codi_validacio = codi_validacio;
     }
 
+    public Usuaris(String email, String password, String API_KEY) {
+        this.email = email;
+        this.password = password;
+        this.API_KEY = API_KEY;
+    }
+
     // Getters and setters
     public Long getId() {
         return id;
