@@ -37,6 +37,8 @@ public class PeticionsResource {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
 
+        System.out.println("Se valida la APIKEY");
+
         try {
             JSONObject input = new JSONObject(jsonInput);
             String model = input.optString("model", null);
@@ -64,13 +66,15 @@ public class PeticionsResource {
                 }
             }
 
+            System.out.println("Valores recibidos guardados");
+
             if (model == null || model.trim().isEmpty() || prompt == null || prompt.trim().isEmpty() || imatges == null || imatges.length == 0) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
 
 
             Peticions novaPeticio = PeticionsDAO.trobaOCreaPeticions(model, prompt, imatgesPath, usuari);
-
+            System.out.println("Peticion creada en la BD");
             // Prepare the response with the new configuration
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("status", "OK");
@@ -78,7 +82,7 @@ public class PeticionsResource {
             JSONObject jsonData = new JSONObject();
             jsonData.put("id", novaPeticio.getId());
             jsonResponse.put("data", jsonData);
-
+            System.out.println("Se guardan los valores de la respuesta al server");
             // Return the response
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
             return Response.ok(prettyJsonResponse).build();
