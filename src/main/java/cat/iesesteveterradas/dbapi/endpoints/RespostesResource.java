@@ -27,7 +27,6 @@ public class RespostesResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response afegirPeticio(@HeaderParam("Authorization") String authHeader, String jsonInput) {
-        System.out.println("Llega la respuesta");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
@@ -40,7 +39,9 @@ public class RespostesResource {
 
         try {
             JSONObject input = new JSONObject(jsonInput);
-            Long id_peticio = input.optLong("id_peticio", 0);
+            System.out.println("Antes de recibir id");
+            Long id_peticio = Long.parseLong(input.optString("id_peticio", null));
+            System.out.println("Despues de recibir id");
             String text_generat = input.optString("text_generat", null);
 
             if (id_peticio == 0 || text_generat == null || text_generat.trim().isEmpty()) {
