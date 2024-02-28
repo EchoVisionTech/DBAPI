@@ -110,13 +110,15 @@ public class UsuarisResource {
             }
             System.out.println("Antes de validacion");
             String API_KEY = UsuarisDAO.loginUsuari(email, password);
-            System.out.println("despues de validacion");
+            System.out.println("despues de validacion " + API_KEY);
+
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("status", "OK");
             jsonResponse.put("message", "Usuari autenticat correctament");
             JSONObject jsonData = new JSONObject();
             jsonData.put("api_key", API_KEY);
             jsonResponse.put("data", jsonData);
+            System.out.println(jsonResponse);
 
             // Retorna la resposta
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
