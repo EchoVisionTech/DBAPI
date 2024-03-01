@@ -39,22 +39,16 @@ public class RespostesResource {
 
         try {
             JSONObject input = new JSONObject(jsonInput);
-            System.out.println("Antes de recibir id");
             Long id_peticio = Long.valueOf(input.optInt("id_peticio", 0));
-            System.out.println("Despues de recibir id");
             String text_generat = input.optString("text_generat", null);
 
             if (id_peticio == 0 || text_generat == null || text_generat.trim().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
 
-            System.out.println("Antes de guardar peticion");
             Peticions peticio = PeticionsDAO.getPeticio(id_peticio);
-            System.out.println("Despues de guardar peticion");
 
             Respostes novaResposta = RespostesDAO.trobaOCreaRespostes(text_generat, peticio, usuari);
-
-            System.out.println("Crea la respuesta");
 
             // Prepare the response with the new configuration
             JSONObject jsonResponse = new JSONObject();
@@ -64,8 +58,6 @@ public class RespostesResource {
             jsonData.put("id", novaResposta.getId());
             jsonData.put("id_peticio", novaResposta.getPeticio().getId());
             jsonResponse.put("data", jsonData);
-
-            System.out.println("Crea respuesta de server");
 
             // Return the response
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar

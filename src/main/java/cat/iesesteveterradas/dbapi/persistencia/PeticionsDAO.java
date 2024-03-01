@@ -53,7 +53,7 @@ public class PeticionsDAO {
             Query<Peticions> query = session.createQuery("FROM Peticions WHERE id = :id", Peticions.class);
             query.setParameter("id", id_peticio);
             peticio = query.uniqueResult();
-            System.out.println(peticio);
+            logger.info("Nova peticio amb id {} creada", peticio.getId());
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             logger.error("Error al crear o trobar la petició", e);

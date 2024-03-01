@@ -97,7 +97,7 @@ public class UsuarisDAO {
                 return null;
             } else {
                 API_KEY = usuari.getAPI_KEY();
-                logger.info("Usuari amb email: {} i password: {} validat correctament", email, password);
+                logger.info("Usuari amb email: validat correctament", email);
             }
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();

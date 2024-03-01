@@ -19,7 +19,7 @@ public class RespostesDAO {
             resposta = new Respostes(text_generat, peticio, usuari);
             session.save(resposta);
             tx.commit();
-            logger.info("Nova resposta creada.");
+            logger.info("Nova resposta amb id {} creada.", resposta.getId());
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             logger.error("Error al crear o trobar la resposta", e);
