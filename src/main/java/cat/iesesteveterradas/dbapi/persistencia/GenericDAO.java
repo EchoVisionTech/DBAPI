@@ -24,7 +24,7 @@ public class GenericDAO {
             tx.commit();
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
-            logger.error("Error en obtenir l'element per id", e);
+            logger.error("Error en obtenir l'element per id ", e);
         } finally {
             session.close(); 
         }
@@ -41,7 +41,8 @@ public class GenericDAO {
             tx.commit();
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
-            e.printStackTrace(); 
+            //e.printStackTrace();
+            logger.error("Error borrar la taula ", e);
         } finally {
             session.close(); 
         }
@@ -65,7 +66,8 @@ public class GenericDAO {
             tx.commit();
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
-            e.printStackTrace(); 
+            //e.printStackTrace();
+            logger.error("Error al buscar la lista ", e);
         } finally {
             session.close(); 
         }
