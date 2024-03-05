@@ -47,12 +47,15 @@ public class UsuarisResource {
             String nickname = input.optString("nickname", null);
             String email = input.optString("email", null);
             String codi_validacio = input.optString("codi_validacio", null);
+            logger.info("json leido");
 
             if (telefon == null || telefon.trim().isEmpty() || nickname == null || nickname.trim().isEmpty() || email == null || email.trim().isEmpty() || codi_validacio == null || codi_validacio.trim().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
+            logger.info("valores leidos");
 
             Usuaris nouUsuari = UsuarisDAO.trobaORegistreUsuaris(telefon, nickname, email, codi_validacio);
+            logger.info("usuario creado");
 
             // Prepara la resposta amb la nova configuració
             JSONObject jsonResponse = new JSONObject();
@@ -64,6 +67,7 @@ public class UsuarisResource {
             jsonData.put("email", nouUsuari.getEmail());
             jsonData.put("codi_validacio", nouUsuari.getCodi_validacio());
             jsonResponse.put("data", jsonData);
+            logger.info("json respuesta creada");
 
             // Retorna la resposta
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
@@ -102,8 +106,10 @@ public class UsuarisResource {
 
             // Retorna la resposta
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            logger.info("Usuari amb telefon: {} validat correctament", telefon);
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
+            logger.info("Error al validar l'usuari");
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir el usuari a la base de dades\"}").build();
         }
     }
@@ -153,8 +159,10 @@ public class UsuarisResource {
 
             // Return the response
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            logger.info("Quota de l'usuari actualitzada correctament. Quota restant: {}", usuari.getQuota());
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
+            logger.info("Error al modificar la quota de l'usuari");
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir la resposta a la base de dades\"}").build();
         }
     }
@@ -209,9 +217,11 @@ public class UsuarisResource {
             jsonResponse.put("data", dataList);
 
             // Converteix l'objecte JSON a una cadena amb pretty print (indentFactor > 0)
-            String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentarç
+            logger.info("Llista de configuracions obtinguda correctament");
             return Response.ok(prettyJsonResponse).build(); // Retorna l'objecte JSON com a resposta
         } catch (Exception e) {
+            logger.info("Error al obtenir la llista de configuracions");
             return Response.serverError().entity("Error en obtenir la llista de configuracions").build();
         }
     }
@@ -241,8 +251,10 @@ public class UsuarisResource {
 
             // Retorna la resposta
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            logger.info("Usuari amb email: {} autenticat correctament", email);
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
+            logger.info("Error al autenticar l'usuari");
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en autenticar el usuari\"}").build();
         }
     }
