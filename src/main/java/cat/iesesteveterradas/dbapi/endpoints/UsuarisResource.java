@@ -1,7 +1,10 @@
 package cat.iesesteveterradas.dbapi.endpoints;
 
+import cat.iesesteveterradas.dbapi.persistencia.GenericDAO;
 import cat.iesesteveterradas.dbapi.persistencia.Peticions;
 import cat.iesesteveterradas.dbapi.persistencia.PeticionsDAO;
+import cat.iesesteveterradas.dbapi.persistencia.Respostes;
+import cat.iesesteveterradas.dbapi.persistencia.RespostesDAO;
 import cat.iesesteveterradas.dbapi.persistencia.Usuaris;
 import cat.iesesteveterradas.dbapi.persistencia.UsuarisDAO;
 import cat.iesesteveterradas.dbapi.respostes.RespostaBasica;
@@ -10,6 +13,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -122,6 +126,57 @@ public class UsuarisResource {
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en autenticar el usuari\"}").build();
+        }
+    }
+
+
+    @POST
+    @Path("/consumir_quota")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response ConsumirQuotaUsuari(@HeaderParam("Authorization") String authHeader, String jsonInput) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
+        }
+        String token = authHeader.substring(7);
+
+        Usuaris usuari = GenericDAO.validateApiKey(token);
+        if (usuari == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
+        }
+
+        try {
+            JSONObject input = new JSONObject(jsonInput);
+            Integer unitats = input.optInt("unitats", 0);
+
+            if (unitats == 0) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
+            }
+
+            if (usuari.getQuota() <= 0) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"429\"}").build();
+            }
+
+            UsuarisDAO.consumirQuota(usuari, unitats);
+
+            // Prepare the response with the new configuration
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("status", "OK");
+            jsonResponse.put("message", "Quota actualitzada correctament");
+            JSONObject jsonData = new JSONObject();
+            jsonData.put("pla", usuari.getPla().getPlaName());
+            JSONObject jsonQuota = new JSONObject();
+            jsonQuota.put("total", usuari.getPla().getQuota());
+            jsonQuota.put("consumida", usuari.getPla().getQuota() - usuari.getQuota());
+            jsonQuota.put("disponible", usuari.getQuota());
+            jsonData.put("quota", jsonQuota);
+            jsonResponse.put("data", jsonData);
+
+            // Return the response
+            String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            return Response.ok(prettyJsonResponse).build();
+        } catch (Exception e) {
+            return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir la resposta a la base de dades\"}").build();
         }
     }
 }

@@ -15,15 +15,28 @@ public class UsuarisDAO {
         Session session = SessionFactoryManager.getSessionFactory().openSession();
         Transaction tx = null;
         Usuaris usuari = null;
+        Pla pla = null;
+        Grup grup = null;
+        Integer quota = -1;
         try {
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
             Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE telefon = :telefon", Usuaris.class);
             query.setParameter("telefon", telefon);
             usuari = query.uniqueResult();
+
+            Query<Pla> query2 = session.createQuery("FROM Pla WHERE plaName = :plaName", Pla.class);
+            query.setParameter("plaName", "free");
+            pla = query2.uniqueResult();
+
+            Query<Grup> query3 = session.createQuery("FROM Grup WHERE grupName = :grupName", Grup.class);
+            query.setParameter("grupName", "usuari");
+            grup = query3.uniqueResult();
+
+            quota = pla.getQuota();
             // Si no es troba, crea una nova configuració
             if (usuari == null) {
-                usuari = new Usuaris(telefon, nickname, email, codi_validacio);
+                usuari = new Usuaris(telefon, nickname, email, codi_validacio, quota, pla, grup);
                 session.save(usuari);
                 tx.commit();
                 logger.info("Nou usuari creat amb el telefon: {}, nickname: {}, email: {}, codi_validacio: {}", telefon, nickname, email, codi_validacio);
@@ -106,6 +119,24 @@ public class UsuarisDAO {
             session.close();
         }
         return API_KEY;
+    }
+
+
+    public static void consumirQuota(Usuaris usuari, Integer unitats) {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            usuari.setQuota(usuari.getQuota() - unitats);
+            session.update(usuari); 
+            tx.commit();
+            logger.info("Quota de l'usuari actualitzada correctament. Quota restant: {}", usuari.getQuota());
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al restar quota al usuari", e);
+        } finally {
+            session.close();
+        }
     }
 
 }

@@ -19,6 +19,7 @@ public class Usuaris {
     private String password;
     private String API_KEY;
     private String codi_validacio;
+    private Integer quota;
 
     @ManyToOne
     private Grup grup; // Reference to the Group table (Many-to-One)
@@ -30,28 +31,26 @@ public class Usuaris {
     public Usuaris() {
     }
 
-    public Usuaris(String telefon, String nickname, String email, String password, String API_KEY, String codi_validacio, Grup grup, Pla pla) {
+    public Usuaris(String telefon, String nickname, String email, String password, String API_KEY, String codi_validacio, Integer quota, Grup grup, Pla pla) {
         this.telefon = telefon;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.API_KEY = API_KEY;
         this.codi_validacio = codi_validacio;
+        this.quota = quota;
         this.grup = grup;
         this.pla = pla;
     }
 
-    public Usuaris(String telefon, String nickname, String email, String codi_validacio) {
+    public Usuaris(String telefon, String nickname, String email, String codi_validacio, Integer quota, Pla pla, Grup grup) {
         this.telefon = telefon;
         this.nickname = nickname;
         this.email = email;
         this.codi_validacio = codi_validacio;
-    }
-
-    public Usuaris(String email, String password, String API_KEY) {
-        this.email = email;
-        this.password = password;
-        this.API_KEY = API_KEY;
+        this.quota = quota;
+        this.pla = pla;
+        this.grup = grup;
     }
 
     // Getters and setters
@@ -111,6 +110,14 @@ public class Usuaris {
         this.codi_validacio = codi_validacio;
     }
 
+    public Integer getQuota() {
+        return quota;
+    }
+
+    public void setQuota(Integer quota) {
+        this.quota = quota;
+    }
+
     public Grup getGrup() {
         return grup;
     }
@@ -136,6 +143,7 @@ public class Usuaris {
                 ", email='" + email + '\'' +
                 ", API_KEY='" + API_KEY + '\'' +
                 ", codi_validacio=" + codi_validacio +
+                ", quota=" + quota +
                 ", grup=" + grup +
                 ", pla=" + pla +
                 '}';
