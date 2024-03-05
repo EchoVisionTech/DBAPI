@@ -111,4 +111,36 @@ public class GenericDAO {
         }
         return usuari;
     }
+
+    public static Usuaris validateApiKeyAdmin(String token) {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        Usuaris usuari = null;
+        try {
+            tx = session.beginTransaction();
+            // Intenta trobar una configuració existent amb el nom donat
+            Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE API_KEY = :token", Usuaris.class);
+            query.setParameter("token", token);
+            usuari = query.uniqueResult();
+            // Si no es troba, crea una nova configuració
+            if (usuari == null) {
+                logger.info("Usuari amb la API {} no existeix.", token);
+                return null;
+            } else {
+                String grupUsuari = usuari.getGrup().getgrupName();
+                if (grupUsuari == "administrador") {
+                    logger.info("Usuari amb la API {} existeix i es administrador.", token);
+                } else {
+                    logger.info("Usuari amb la API {} no es administrador.", token);
+                    return null;
+                }   
+            }
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al crear o trobar la petició", e);
+        } finally {
+            session.close();
+        }
+        return usuari;
+    }
 }

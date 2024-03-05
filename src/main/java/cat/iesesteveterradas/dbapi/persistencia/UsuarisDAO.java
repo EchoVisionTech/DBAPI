@@ -6,6 +6,8 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 import java.util.Random;
 
 public class UsuarisDAO {
@@ -137,6 +139,31 @@ public class UsuarisDAO {
         } finally {
             session.close();
         }
+    }
+
+
+    public static Usuaris[] getUsuarisList() {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        List<Usuaris> userList = null;
+    
+        try {
+            tx = session.beginTransaction();
+    
+            // Retrieve all users from the Usuaris table
+            Query<Usuaris> query = session.createQuery("FROM Usuaris", Usuaris.class);
+            userList = query.list();
+    
+            tx.commit();
+            logger.info("Retrieved all users successfully");
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error retrieving users", e);
+        } finally {
+            session.close();
+        }
+    
+        return userList.toArray(new Usuaris[0]);
     }
 
 }
