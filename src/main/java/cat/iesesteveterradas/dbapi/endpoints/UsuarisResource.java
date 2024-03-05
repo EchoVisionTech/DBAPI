@@ -26,9 +26,15 @@ import java.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.mysql.cj.conf.PropertyKey.logger;
 
 @Path("/usuaris")
 public class UsuarisResource {
+
+    private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
 
     @POST
     @Path("/registrar")
@@ -61,8 +67,10 @@ public class UsuarisResource {
 
             // Retorna la resposta
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            logger.info("Nou usuari creat amb el telefon: {}, nickname: {}, email: {}, codi_validacio: {}", telefon, nickname, email, codi_validacio);
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
+            logger.info("Error al crear el nou usuari");
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir el usuari a la base de dades\"}").build();
         }
     }
