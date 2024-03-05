@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 public class Peticions {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String prompt;
