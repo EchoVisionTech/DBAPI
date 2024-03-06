@@ -138,12 +138,9 @@ public class UsuarisDAO {
     
         try {
             tx = session.beginTransaction();
-            logger.info("Llega a get user list");
-    
             // Retrieve all users from the Usuaris table
             Query<Usuaris> query = session.createQuery("FROM Usuaris", Usuaris.class);
             userList = query.list();
-            logger.info("Hace query");
             tx.commit();
             logger.info("Retrieved all users successfully");
         } catch (HibernateException e) {
@@ -156,4 +153,73 @@ public class UsuarisDAO {
         return userList.toArray(new Usuaris[0]);
     }
 
+
+    public static Pla getNouPla(String plaName) {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        Pla pla = null;
+    
+        try {
+            tx = session.beginTransaction();
+            Query<Pla> query = session.createQuery("FROM Pla WHERE plaName = :plaName", Pla.class);
+            query.setParameter("plaName", plaName);
+            pla = query.uniqueResult();
+            tx.commit();
+            logger.info("Pla aconseguit correctament");
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error aconseguint pla", e);
+        } finally {
+            session.close();
+        }
+    
+        return pla;
+    }
+
+
+    public static Usuaris getUsuari(String telefon) {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        Usuaris usuari = null;
+        try {
+            tx = session.beginTransaction();
+            // Intenta trobar una configuració existent amb el nom donat
+            Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE telefon = :telefon", Usuaris.class);
+            query.setParameter("telefon", telefon);
+            usuari = query.uniqueResult();
+            // Si no es troba, crea una nova configuració
+            if (usuari == null) {
+                logger.info("Usuari amb telefon: {} no existeix", telefon);
+                return null;
+            }
+            logger.info("Usuari trobat correctament");
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al aconseguir l'usuari", e);
+        } finally {
+            session.close();
+        }
+        return usuari;
+    }
+
+
+    public static Usuaris canviarPlaUsuari(Usuaris usuari, Pla pla, Integer quotaRestant) {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            usuari.setPla(pla);
+            usuari.setQuota(pla.getQuota() - quotaRestant);
+            session.update(usuari); 
+            tx.commit();
+            logger.info("Pla de l'usuari canviat correctament a {}", usuari.getPla().getPlaName());
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al canviar pla de l'usuari", e);
+        } finally {
+            session.close();
+        }
+        return usuari;
+    }
+    
 }

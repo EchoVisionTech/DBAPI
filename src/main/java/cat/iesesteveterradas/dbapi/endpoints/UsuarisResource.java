@@ -25,6 +25,8 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 
 import org.json.JSONArray;
@@ -246,22 +248,15 @@ public class UsuarisResource {
                     userJson.put("nickname", user.getNickname());
                     userJson.put("email", user.getEmail());
                     userJson.put("telefon", user.getTelefon());
-
-                    logger.info("Checkpoint 2");
                     Boolean validat = user.getAPI_KEY().isEmpty();
                     userJson.put("validat", validat);
                     userJson.put("pla", user.getPla().getPlaName());
                     userJson.put("grups", user.getGrup().getgrupName());
-                    
-                    logger.info("Checkpoint 3");
+            
                     JSONObject quotaJson = new JSONObject();
-
-                    logger.info("Checkpoint 4");
                     quotaJson.put("total", user.getPla().getQuota());
                     quotaJson.put("consumida", user.getPla().getQuota() - user.getQuota());
                     quotaJson.put("disponible", user.getQuota());
-                    
-                    logger.info("Checkpoint 5");
                     userJson.put("quota", quotaJson);
                 
                     // Add the userJson object to the dataList array
@@ -311,6 +306,61 @@ public class UsuarisResource {
         } catch (Exception e) {
             logger.info("Error al autenticar l'usuari");
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en autenticar el usuari\"}").build();
+        }
+    }
+
+
+    @POST
+    @Path("/admin_canvi_pla")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response AdminCanviPla(@HeaderParam("Authorization") String authHeader, String jsonInput) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
+        }
+        String token = authHeader.substring(7);
+
+        Usuaris usuariAdmin = GenericDAO.validateApiKeyAdmin(token);
+        if (usuariAdmin == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
+        }
+
+        try {
+            JSONObject input = new JSONObject(jsonInput);
+            String telefon = input.optString("telefon", null);
+            String nickname = input.optString("nickname", null);
+            String email = input.optString("email", null);
+            String pla = input.optString("pla", null);
+
+            if (telefon == null || telefon.trim().isEmpty() || nickname == null || nickname.trim().isEmpty() || email == null || email.trim().isEmpty() || pla == null || pla.trim().isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
+            }
+
+            Pla nouPla = UsuarisDAO.getNouPla(pla);
+            Usuaris usuari = UsuarisDAO.getUsuari(telefon);
+            Integer pastUsedQuota = usuari.getPla().getQuota() - usuari.getQuota();
+            
+            usuari = UsuarisDAO.canviarPlaUsuari(usuari, nouPla, pastUsedQuota);
+            
+            
+            // Prepare the response with the new configuration
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("status", "OK");
+            jsonResponse.put("message", "Pla canviat correctament");
+            JSONObject jsonData = new JSONObject();
+
+            jsonData.put("pla", nouPla.getPlaName());
+            JSONObject jsonQuota = new JSONObject();
+            jsonQuota.put("total", usuari.getPla().getQuota());
+            jsonQuota.put("consumida", usuari.getPla().getQuota() - usuari.getQuota());
+            jsonQuota.put("disponible", usuari.getQuota());
+
+            jsonResponse.put("data", jsonData);
+            // Return the response
+            String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+            return Response.ok(prettyJsonResponse).build();
+        } catch (Exception e) {
+            return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error realitzar el canvi de pla\"}").build();
         }
     }
 }
