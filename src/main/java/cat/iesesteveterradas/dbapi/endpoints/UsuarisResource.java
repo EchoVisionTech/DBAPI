@@ -228,9 +228,10 @@ public class UsuarisResource {
         }
 
         try {
+            logger.info("Antes de hacer literal nada");
             JSONObject input = new JSONObject(jsonInput);
             String test = input.optString("a");
-            logger.info("Antes de user list");
+            logger.info("Antes de user list/despues de leer datos recibidos");
             Usuaris[] usuarisList = UsuarisDAO.getUsuarisList();
             logger.info("Despues de user list");
             // Crea l'objecte JSON principal que inclou la llista de configuracions
