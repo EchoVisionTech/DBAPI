@@ -229,6 +229,7 @@ public class UsuarisResource {
 
         try {
             JSONObject input = new JSONObject(jsonInput);
+            String test = input.optString("a");
             logger.info("Antes de user list");
             Usuaris[] usuarisList = UsuarisDAO.getUsuarisList();
             logger.info("Despues de user list");
