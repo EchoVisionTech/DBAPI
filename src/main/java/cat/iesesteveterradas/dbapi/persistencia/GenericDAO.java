@@ -143,4 +143,57 @@ public class GenericDAO {
         }
         return usuari;
     }
+
+
+    public static Pla getDefaultPla() {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        Pla pla = null;
+        try {
+            tx = session.beginTransaction();
+            // Intenta trobar una configuració existent amb el nom donat
+            Query<Pla> query = session.createQuery("FROM Pla WHERE id = :id", Pla.class);
+            query.setParameter("id", 1);
+            pla = query.uniqueResult();
+            // Si no es troba, crea una nova configuració
+            if (pla == null) {
+                logger.info("Pla invalid");
+                return null;
+            }
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al crear o trobar la petició", e);
+        } finally {
+            session.close();
+        }
+        return pla;
+    }
+
+
+    public static Grup getDefaultGrup() {
+        Session session = SessionFactoryManager.getSessionFactory().openSession();
+        Transaction tx = null;
+        Grup grup = null;
+        try {
+            tx = session.beginTransaction();
+            // Intenta trobar una configuració existent amb el nom donat
+            Query<Grup> query = session.createQuery("FROM Grup WHERE id = :id", Grup.class);
+            query.setParameter("id", 1);
+            grup = query.uniqueResult();
+            // Si no es troba, crea una nova configuració
+            if (grup == null) {
+                logger.info("Grup invalid");
+                return null;
+            }
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error("Error al crear o trobar la petició", e);
+        } finally {
+            session.close();
+        }
+        return grup;
+    }
+
+
+
 }

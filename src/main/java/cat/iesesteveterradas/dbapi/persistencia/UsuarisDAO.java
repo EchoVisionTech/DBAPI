@@ -70,14 +70,9 @@ public class UsuarisDAO {
                     apiKey.append(characters.charAt(index));
                 }
 
-                Query<Pla> query2 = session.createQuery("FROM Pla WHERE plaName = :plaName", Pla.class);
-                query.setParameter("plaName", "free");
-                pla = query2.uniqueResult();
-                System.out.println(pla);
-                Query<Grup> query3 = session.createQuery("FROM Grup WHERE grupName = :grupName", Grup.class);
-                query.setParameter("grupName", "usuari");
-                grup = query3.uniqueResult();
-                System.out.println(grup);
+                pla = GenericDAO.getDefaultPla();
+                grup = GenericDAO.getDefaultGrup();
+                quota = pla.getQuota();
                 logger.info(pla + "\n" + grup + "\n" + quota);
 
                 API_KEY = apiKey.toString();
