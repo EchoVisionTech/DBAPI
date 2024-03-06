@@ -138,11 +138,12 @@ public class UsuarisDAO {
     
         try {
             tx = session.beginTransaction();
+            logger.info("Llega a get user list");
     
             // Retrieve all users from the Usuaris table
             Query<Usuaris> query = session.createQuery("FROM Usuaris", Usuaris.class);
             userList = query.list();
-    
+            logger.info("Hace query");
             tx.commit();
             logger.info("Retrieved all users successfully");
         } catch (HibernateException e) {
