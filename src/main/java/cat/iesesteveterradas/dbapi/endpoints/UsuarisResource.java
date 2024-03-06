@@ -14,6 +14,7 @@ import cat.iesesteveterradas.dbapi.respostes.RespostaBasica;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.validation.constraints.Null;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
@@ -238,30 +239,35 @@ public class UsuarisResource {
 
             for (int i = 0; i < usuarisList.length; i++) {
                 Usuaris user = usuarisList[i];
-                // Create a JSONObject to hold the details of each Usuaris object
-                JSONObject userJson = new JSONObject();
-                logger.info("Checkpoint 1");
-                userJson.put("nickname", user.getNickname());
-                userJson.put("email", user.getEmail());
-                userJson.put("telefon", user.getTelefon());
+                if (user.getGrup().getId() == 1) {
+                    // Create a JSONObject to hold the details of each Usuaris object
+                    JSONObject userJson = new JSONObject();
+                    logger.info("Checkpoint 1");
+                    userJson.put("nickname", user.getNickname());
+                    userJson.put("email", user.getEmail());
+                    userJson.put("telefon", user.getTelefon());
 
-                logger.info("Checkpoint 2");
-                userJson.put("pla", user.getPla().getPlaName());
-                
-                logger.info("Checkpoint 3");
-                JSONObject quotaJson = new JSONObject();
+                    logger.info("Checkpoint 2");
+                    Boolean validat = user.getAPI_KEY().isEmpty();
+                    userJson.put("validat", validat);
+                    userJson.put("pla", user.getPla().getPlaName());
+                    userJson.put("grups", user.getGrup().getgrupName());
+                    
+                    logger.info("Checkpoint 3");
+                    JSONObject quotaJson = new JSONObject();
 
-                logger.info("Checkpoint 4");
-                quotaJson.put("total", user.getPla().getQuota());
-                quotaJson.put("consumida", user.getPla().getQuota() - user.getQuota());
-                quotaJson.put("disponible", user.getQuota());
+                    logger.info("Checkpoint 4");
+                    quotaJson.put("total", user.getPla().getQuota());
+                    quotaJson.put("consumida", user.getPla().getQuota() - user.getQuota());
+                    quotaJson.put("disponible", user.getQuota());
+                    
+                    logger.info("Checkpoint 5");
+                    userJson.put("quota", quotaJson);
                 
-                logger.info("Checkpoint 5");
-                userJson.put("quota", quotaJson);
-            
-                // Add the userJson object to the dataList array
-                dataList[i] = userJson;
-                System.out.println(dataList);
+                    // Add the userJson object to the dataList array
+                    dataList[i] = userJson;
+                    System.out.println(dataList);
+                }
             }
             jsonResponse.put("data", dataList);
 
