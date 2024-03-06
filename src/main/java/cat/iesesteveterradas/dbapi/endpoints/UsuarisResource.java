@@ -326,6 +326,7 @@ public class UsuarisResource {
         }
         logger.info("After validating admin");
         try {
+            logger.info(jsonInput);
             JSONObject input = new JSONObject(jsonInput);
             String telefon = input.optString("telefon", null);
             String nickname = input.optString("nickname", null);
