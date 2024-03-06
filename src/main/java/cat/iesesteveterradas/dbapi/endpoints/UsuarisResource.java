@@ -3,6 +3,7 @@ package cat.iesesteveterradas.dbapi.endpoints;
 import cat.iesesteveterradas.dbapi.persistencia.GenericDAO;
 import cat.iesesteveterradas.dbapi.persistencia.Peticions;
 import cat.iesesteveterradas.dbapi.persistencia.PeticionsDAO;
+import cat.iesesteveterradas.dbapi.persistencia.Pla;
 import cat.iesesteveterradas.dbapi.persistencia.Respostes;
 import cat.iesesteveterradas.dbapi.persistencia.RespostesDAO;
 import cat.iesesteveterradas.dbapi.persistencia.Usuaris;
@@ -52,10 +53,12 @@ public class UsuarisResource {
             if (telefon == null || telefon.trim().isEmpty() || nickname == null || nickname.trim().isEmpty() || email == null || email.trim().isEmpty() || codi_validacio == null || codi_validacio.trim().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
             }
-            logger.info("valores leidos");
+
+            Pla pla = GenericDAO.getDefaultPla();
+
+            logger.info(pla.toString());
 
             Usuaris nouUsuari = UsuarisDAO.trobaORegistreUsuaris(telefon, nickname, email, codi_validacio);
-            logger.info("usuario creado");
 
             // Prepara la resposta amb la nova configuració
             JSONObject jsonResponse = new JSONObject();

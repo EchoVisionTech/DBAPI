@@ -47,9 +47,6 @@ public class UsuarisDAO {
         Transaction tx = null;
         Usuaris usuari = null;
         String API_KEY = null;
-        Pla pla = null;
-        Grup grup = null;
-        Integer quota = -1;
         try {
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
@@ -69,11 +66,6 @@ public class UsuarisDAO {
                     int index = random.nextInt(characters.length());
                     apiKey.append(characters.charAt(index));
                 }
-
-                pla = GenericDAO.getDefaultPla();
-                grup = GenericDAO.getDefaultGrup();
-                quota = pla.getQuota();
-                logger.info(pla + "\n" + grup + "\n" + quota);
 
                 API_KEY = apiKey.toString();
                 usuari.setAPI_KEY(API_KEY);
