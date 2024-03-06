@@ -358,6 +358,8 @@ public class UsuarisResource {
             jsonResponse.put("data", jsonData);
             // Return the response
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentar
+
+            logger.info("Canvi de pla realitzat correctament");
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
             return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error realitzar el canvi de pla\"}").build();
