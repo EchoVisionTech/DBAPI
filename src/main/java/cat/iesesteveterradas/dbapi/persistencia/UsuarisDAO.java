@@ -13,7 +13,7 @@ import java.util.Random;
 public class UsuarisDAO {
     private static final Logger logger = LoggerFactory.getLogger(GenericDAO.class);
 
-    public static Usuaris trobaORegistreUsuaris(String telefon, String nickname, String email, String codi_validacio) {
+    public static Usuaris trobaORegistreUsuaris(String telefon, String nickname, String email, String codi_validacio, Pla pla, Grup grup, Integer quota) {
         Session session = SessionFactoryManager.getSessionFactory().openSession();
         Transaction tx = null;
         Usuaris usuari = null;
@@ -26,7 +26,7 @@ public class UsuarisDAO {
             
             // Si no es troba, crea una nova configuració
             if (usuari == null) {
-                usuari = new Usuaris(telefon, nickname, email, codi_validacio);
+                usuari = new Usuaris(telefon, nickname, email, codi_validacio, pla, grup, quota);
                 session.save(usuari);
                 tx.commit();
                 logger.info("Nou usuari creat amb el telefon: {}, nickname: {}, email: {}, codi_validacio: {}", telefon, nickname, email, codi_validacio);

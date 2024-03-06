@@ -1,6 +1,7 @@
 package cat.iesesteveterradas.dbapi.endpoints;
 
 import cat.iesesteveterradas.dbapi.persistencia.GenericDAO;
+import cat.iesesteveterradas.dbapi.persistencia.Grup;
 import cat.iesesteveterradas.dbapi.persistencia.Peticions;
 import cat.iesesteveterradas.dbapi.persistencia.PeticionsDAO;
 import cat.iesesteveterradas.dbapi.persistencia.Pla;
@@ -55,10 +56,11 @@ public class UsuarisResource {
             }
 
             Pla pla = GenericDAO.getDefaultPla();
+            Grup grup = GenericDAO.getDefaultGrup();
+            Integer quota = pla.getQuota();
+            
 
-            logger.info(pla.toString());
-
-            Usuaris nouUsuari = UsuarisDAO.trobaORegistreUsuaris(telefon, nickname, email, codi_validacio);
+            Usuaris nouUsuari = UsuarisDAO.trobaORegistreUsuaris(telefon, nickname, email, codi_validacio, pla, grup, quota);
 
             // Prepara la resposta amb la nova configuració
             JSONObject jsonResponse = new JSONObject();

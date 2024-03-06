@@ -43,11 +43,14 @@ public class Usuaris {
         this.pla = pla;
     }
 
-    public Usuaris(String telefon, String nickname, String email, String codi_validacio) {
+    public Usuaris(String telefon, String nickname, String email, String codi_validacio, Pla pla, Grup grup, Integer quota) {
         this.telefon = telefon;
         this.nickname = nickname;
         this.email = email;
         this.codi_validacio = codi_validacio;
+        this.quota = quota;
+        this.pla = pla;
+        this.grup = grup;
     }
 
     // Getters and setters
