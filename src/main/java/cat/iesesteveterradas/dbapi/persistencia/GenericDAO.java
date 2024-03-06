@@ -123,12 +123,14 @@ public class GenericDAO {
             Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE API_KEY = :token", Usuaris.class);
             query.setParameter("token", token);
             usuari = query.uniqueResult();
+            System.out.println(usuari);
             // Si no es troba, crea una nova configuració
             if (usuari == null) {
                 logger.info("Usuari amb la API {} no existeix.", token);
                 return null;
             } else {
                 String grupUsuari = usuari.getGrup().getgrupName();
+                logger.info(grupUsuari);
                 if (grupUsuari == "administrador") {
                     logger.info("Usuari amb la API {} existeix i es administrador.", token);
                 } else {
