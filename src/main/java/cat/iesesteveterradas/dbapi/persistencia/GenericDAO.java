@@ -120,8 +120,10 @@ public class GenericDAO {
             logger.info("Llega a verificacion de admin");
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
+            logger.info("Antes de query");
             Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE API_KEY = :token", Usuaris.class);
             query.setParameter("token", token);
+            logger.info("Despues de query antes de guardar registro");
             usuari = query.uniqueResult();
             System.out.println(usuari);
             // Si no es troba, crea una nova configuració
