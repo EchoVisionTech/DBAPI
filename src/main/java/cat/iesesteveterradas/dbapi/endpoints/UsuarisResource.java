@@ -227,12 +227,9 @@ public class UsuarisResource {
         if (usuari == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
-        logger.info("Despues verificar usuario");
 
         try {
-            logger.info("Antes de user list");
             Usuaris[] usuarisList = UsuarisDAO.getUsuarisList();
-            logger.info("Despues de user list");
             // Crea l'objecte JSON principal que inclou la llista de configuracions
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("status", "OK");
@@ -249,10 +246,7 @@ public class UsuarisResource {
                 userJson.put("telefon", user.getTelefon());
 
                 logger.info("Checkpoint 2");
-                Boolean validat = user.getAPI_KEY().isEmpty();
-                userJson.put("validat", validat);
                 userJson.put("pla", user.getPla().getPlaName());
-                userJson.put("grups", user.getGrup().getgrupName());
                 
                 logger.info("Checkpoint 3");
                 JSONObject quotaJson = new JSONObject();
