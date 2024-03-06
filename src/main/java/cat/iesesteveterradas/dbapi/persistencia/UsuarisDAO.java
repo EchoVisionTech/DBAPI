@@ -17,29 +17,16 @@ public class UsuarisDAO {
         Session session = SessionFactoryManager.getSessionFactory().openSession();
         Transaction tx = null;
         Usuaris usuari = null;
-        Pla pla = null;
-        Grup grup = null;
-        Integer quota = -1;
         try {
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
             Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE telefon = :telefon", Usuaris.class);
             query.setParameter("telefon", telefon);
             usuari = query.uniqueResult();
-            System.out.println(usuari);
-            Query<Pla> query2 = session.createQuery("FROM Pla WHERE plaName = :plaName", Pla.class);
-            query.setParameter("plaName", "free");
-            pla = query2.uniqueResult();
-            System.out.println(pla);
-            Query<Grup> query3 = session.createQuery("FROM Grup WHERE grupName = :grupName", Grup.class);
-            query.setParameter("grupName", "usuari");
-            grup = query3.uniqueResult();
-            System.out.println(grup);
-            quota = pla.getQuota();
-            System.out.println(quota);
+            
             // Si no es troba, crea una nova configuració
             if (usuari == null) {
-                usuari = new Usuaris(telefon, nickname, email, codi_validacio, quota, pla, grup);
+                usuari = new Usuaris(telefon, nickname, email, codi_validacio);
                 session.save(usuari);
                 tx.commit();
                 logger.info("Nou usuari creat amb el telefon: {}, nickname: {}, email: {}, codi_validacio: {}", telefon, nickname, email, codi_validacio);
@@ -60,6 +47,9 @@ public class UsuarisDAO {
         Transaction tx = null;
         Usuaris usuari = null;
         String API_KEY = null;
+        Pla pla = null;
+        Grup grup = null;
+        Integer quota = -1;
         try {
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
@@ -79,6 +69,17 @@ public class UsuarisDAO {
                     int index = random.nextInt(characters.length());
                     apiKey.append(characters.charAt(index));
                 }
+
+                Query<Pla> query2 = session.createQuery("FROM Pla WHERE plaName = :plaName", Pla.class);
+                query.setParameter("plaName", "free");
+                pla = query2.uniqueResult();
+                System.out.println(pla);
+                Query<Grup> query3 = session.createQuery("FROM Grup WHERE grupName = :grupName", Grup.class);
+                query.setParameter("grupName", "usuari");
+                grup = query3.uniqueResult();
+                System.out.println(grup);
+                logger.info(pla + "\n" + grup + "\n" + quota);
+
                 API_KEY = apiKey.toString();
                 usuari.setAPI_KEY(API_KEY);
                 session.update(usuari); 
