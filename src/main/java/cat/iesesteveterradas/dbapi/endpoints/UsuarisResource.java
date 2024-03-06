@@ -319,29 +319,31 @@ public class UsuarisResource {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
         String token = authHeader.substring(7);
-
+        logger.info("Before validating admin");
         Usuaris usuariAdmin = GenericDAO.validateApiKeyAdmin(token);
         if (usuariAdmin == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
-
+        logger.info("After validating admin");
         try {
             JSONObject input = new JSONObject(jsonInput);
             String telefon = input.optString("telefon", null);
             String nickname = input.optString("nickname", null);
             String email = input.optString("email", null);
             String pla = input.optString("pla", null);
-
-            if (telefon == null || telefon.trim().isEmpty() || nickname == null || nickname.trim().isEmpty() || email == null || email.trim().isEmpty() || pla == null || pla.trim().isEmpty()) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor introduit is invalid o buit.\"}").build();
+            logger.info("After saving input data");
+            if (telefon == null && nickname == null && email == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor identificatiu de l'usuari es necessari.\"}").build();
             }
-
+            logger.info("Before important part");
             Pla nouPla = UsuarisDAO.getNouPla(pla);
+            logger.info("After getting new pla");
             Usuaris usuari = UsuarisDAO.getUsuari(telefon);
+            logger.info("After getting usuari info");
             Integer pastUsedQuota = usuari.getPla().getQuota() - usuari.getQuota();
             
             usuari = UsuarisDAO.canviarPlaUsuari(usuari, nouPla, pastUsedQuota);
-            
+            logger.info("After changing usuari pla");
             
             // Prepare the response with the new configuration
             JSONObject jsonResponse = new JSONObject();
