@@ -212,10 +212,11 @@ public class UsuarisResource {
     }
 
 
-    @GET
+    @POST
     @Path("/admin_obtenir_llista")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response AdminObtenirLlista(@HeaderParam("Authorization") String authHeader) {
+    public Response AdminObtenirLlista(@HeaderParam("Authorization") String authHeader, String jsonInput) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
@@ -228,6 +229,7 @@ public class UsuarisResource {
         }
 
         try {
+            JSONObject input = new JSONObject(jsonInput);
             Usuaris[] usuarisList = UsuarisDAO.getUsuarisList();
             logger.info("Pasa de la verificacion de admin");
 
