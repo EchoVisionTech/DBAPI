@@ -222,6 +222,7 @@ public class UsuarisResource {
         }
         
         String token = authHeader.substring(7);
+        logger.info(token);
         Usuaris usuari = GenericDAO.validateApiKeyAdmin(token);
         if (usuari == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
