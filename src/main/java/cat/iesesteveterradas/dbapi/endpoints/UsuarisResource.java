@@ -186,7 +186,7 @@ public class UsuarisResource {
             }
 
             if (usuari.getQuota() <= 0) {
-                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"429\"}").build();
+                return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"429\",\"message\":\"La quota del usuari es insuficient\"}").build();
             }
 
             UsuarisDAO.consumirQuota(usuari, unitats);
@@ -323,29 +323,19 @@ public class UsuarisResource {
         }
         
         try {
-            logger.info("Before receiving data");
             JSONObject input = new JSONObject(jsonInput);
-            logger.info(input.toString());
             String telefon = input.optString("telefon", null);
-            logger.info(telefon.toString());
             String nickname = input.optString("nickname", null);
-            logger.info(nickname.toString());
             String email = input.optString("email", null);
-            logger.info(email.toString());
             String pla = input.optString("pla", null);
-            logger.info("After saving input data");
             if (telefon == null && nickname == null && email == null) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor identificatiu de l'usuari es necessari.\"}").build();
             }
-            logger.info("Before important part");
             Pla nouPla = UsuarisDAO.getNouPla(pla);
-            logger.info("After getting new pla");
             Usuaris usuari = UsuarisDAO.getUsuari(telefon);
-            logger.info("After getting usuari info");
             Integer pastUsedQuota = usuari.getPla().getQuota() - usuari.getQuota();
             
             usuari = UsuarisDAO.canviarPlaUsuari(usuari, nouPla, pastUsedQuota);
-            logger.info("After changing usuari pla");
             
             // Prepare the response with the new configuration
             JSONObject jsonResponse = new JSONObject();
