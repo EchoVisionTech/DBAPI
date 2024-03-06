@@ -226,7 +226,6 @@ public class UsuarisResource {
         
         String token = authHeader.substring(7);
         Usuaris usuari = GenericDAO.validateApiKeyAdmin(token);
-        logger.info("Despues guardar usuario");
         if (usuari == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
@@ -244,7 +243,6 @@ public class UsuarisResource {
                 if (user.getGrup().getId() == 1) {
                     // Create a JSONObject to hold the details of each Usuaris object
                     JSONObject userJson = new JSONObject();
-                    logger.info("Checkpoint 1");
                     userJson.put("nickname", user.getNickname());
                     userJson.put("email", user.getEmail());
                     userJson.put("telefon", user.getTelefon());
@@ -319,18 +317,21 @@ public class UsuarisResource {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
         String token = authHeader.substring(7);
-        logger.info("Before validating admin");
         Usuaris usuariAdmin = GenericDAO.validateApiKeyAdmin(token);
         if (usuariAdmin == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
-        logger.info("After validating admin");
+        
         try {
-            logger.info(jsonInput);
+            logger.info("Before receiving data");
             JSONObject input = new JSONObject(jsonInput);
+            logger.info(input.toString());
             String telefon = input.optString("telefon", null);
+            logger.info(telefon.toString());
             String nickname = input.optString("nickname", null);
+            logger.info(nickname.toString());
             String email = input.optString("email", null);
+            logger.info(email.toString());
             String pla = input.optString("pla", null);
             logger.info("After saving input data");
             if (telefon == null && nickname == null && email == null) {
