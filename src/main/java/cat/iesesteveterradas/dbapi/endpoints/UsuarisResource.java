@@ -120,6 +120,45 @@ public class UsuarisResource {
     }
 
 
+    @GET
+    @Path("/consultar_quota")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response ConsultarQuota(@HeaderParam("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
+        }
+        String token = authHeader.substring(7);
+
+        Usuaris usuari = GenericDAO.validateApiKey(token);
+        if (usuari == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
+        }
+
+        try {
+            // Crea l'objecte JSON principal que inclou la llista de configuracions
+            JSONObject jsonResponse = new JSONObject();
+            jsonResponse.put("status", "OK");
+            jsonResponse.put("message", "Quota consultada correctament");
+            JSONObject jsonData = new JSONObject();
+            jsonData.put("pla", usuari.getPla().getPlaName());
+            JSONObject jsonQuota = new JSONObject();
+            jsonQuota.put("total", usuari.getPla().getQuota());
+            jsonQuota.put("consumida", usuari.getPla().getQuota() - usuari.getQuota());
+            jsonQuota.put("disponible", usuari.getQuota());
+            jsonData.put("quota", jsonQuota);
+            jsonResponse.put("data", jsonData);
+
+            // Converteix l'objecte JSON a una cadena amb pretty print (indentFactor > 0)
+            String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentarç
+            logger.info("Informacio de la quota obtinguda correctament");
+            return Response.ok(prettyJsonResponse).build(); // Retorna l'objecte JSON com a resposta
+        } catch (Exception e) {
+            logger.info("Error al obtenir la informacio de la quota");
+            return Response.serverError().entity("Error al obtenir la informacio de la quota").build();
+        }
+    }
+
+
     @POST
     @Path("/consumir_quota")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -168,7 +207,7 @@ public class UsuarisResource {
             return Response.ok(prettyJsonResponse).build();
         } catch (Exception e) {
             logger.info("Error al modificar la quota de l'usuari");
-            return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error en afegir la resposta a la base de dades\"}").build();
+            return Response.serverError().entity("{\"status\":\"ERROR\",\"message\":\"Error al modificar la quota de l'usuari\"}").build();
         }
     }
 
@@ -218,16 +257,17 @@ public class UsuarisResource {
             
                 // Add the userJson object to the dataList array
                 dataList[i] = userJson;
+                System.out.println(dataList);
             }
             jsonResponse.put("data", dataList);
 
             // Converteix l'objecte JSON a una cadena amb pretty print (indentFactor > 0)
             String prettyJsonResponse = jsonResponse.toString(4); // 4 espais per indentarç
-            logger.info("Llista de configuracions obtinguda correctament");
+            logger.info("Llista de usuaris obtinguda correctament");
             return Response.ok(prettyJsonResponse).build(); // Retorna l'objecte JSON com a resposta
         } catch (Exception e) {
-            logger.info("Error al obtenir la llista de configuracions");
-            return Response.serverError().entity("Error en obtenir la llista de configuracions").build();
+            logger.info("Error al obtenir la llista de usuaris");
+            return Response.serverError().entity("Error en obtenir la llista de usuaris").build();
         }
     }
 
