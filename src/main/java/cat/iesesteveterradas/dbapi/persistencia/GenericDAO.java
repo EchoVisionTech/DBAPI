@@ -125,15 +125,13 @@ public class GenericDAO {
             query.setParameter("token", token);
             logger.info("Despues de query antes de guardar registro");
             usuari = query.uniqueResult();
-            System.out.println(usuari);
             // Si no es troba, crea una nova configuració
             if (usuari == null) {
                 logger.info("Usuari amb la API {} no existeix.", token);
                 return null;
             } else {
-                String grupUsuari = usuari.getGrup().getgrupName();
-                logger.info(grupUsuari);
-                if (grupUsuari == "administrador") {
+                Long grupUsuari = usuari.getGrup().getId();
+                if (grupUsuari == 2) {
                     logger.info("Usuari amb la API {} existeix i es administrador.", token);
                 } else {
                     logger.info("Usuari amb la API {} no es administrador.", token);
