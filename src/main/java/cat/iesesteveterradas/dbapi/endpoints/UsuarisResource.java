@@ -219,8 +219,9 @@ public class UsuarisResource {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
         }
+        
         String token = authHeader.substring(7);
-
+        logger.info(token);
         Usuaris usuari = GenericDAO.validateApiKeyAdmin(token);
         if (usuari == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
@@ -228,7 +229,7 @@ public class UsuarisResource {
 
         try {
             Usuaris[] usuarisList = UsuarisDAO.getUsuarisList();
-
+            logger.info("Pasa de la verificacion de admin");
 
             // Crea l'objecte JSON principal que inclou la llista de configuracions
             JSONObject jsonResponse = new JSONObject();

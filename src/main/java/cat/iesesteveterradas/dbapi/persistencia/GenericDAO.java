@@ -117,6 +117,7 @@ public class GenericDAO {
         Transaction tx = null;
         Usuaris usuari = null;
         try {
+            logger.info("Llega a verificacion de admin");
             tx = session.beginTransaction();
             // Intenta trobar una configuració existent amb el nom donat
             Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE API_KEY = :token", Usuaris.class);
