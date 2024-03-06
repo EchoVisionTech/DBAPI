@@ -222,7 +222,6 @@ public class UsuarisResource {
         }
         
         String token = authHeader.substring(7);
-        logger.info(token);
         Usuaris usuari = GenericDAO.validateApiKeyAdmin(token);
         if (usuari == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"status\":\"ERROR\",\"message\":\"Clau API no vàlida.\"}").build();
@@ -231,7 +230,6 @@ public class UsuarisResource {
         try {
             JSONObject input = new JSONObject(jsonInput);
             Usuaris[] usuarisList = UsuarisDAO.getUsuarisList();
-            logger.info("Pasa de la verificacion de admin");
 
             // Crea l'objecte JSON principal que inclou la llista de configuracions
             JSONObject jsonResponse = new JSONObject();
@@ -243,19 +241,26 @@ public class UsuarisResource {
                 Usuaris user = usuarisList[i];
                 // Create a JSONObject to hold the details of each Usuaris object
                 JSONObject userJson = new JSONObject();
-            
+                logger.info("Checkpoint 1");
                 userJson.put("nickname", user.getNickname());
                 userJson.put("email", user.getEmail());
                 userJson.put("telefon", user.getTelefon());
+
+                logger.info("Checkpoint 2");
                 Boolean validat = user.getAPI_KEY().isEmpty();
                 userJson.put("validat", validat);
                 userJson.put("pla", user.getPla().getPlaName());
                 userJson.put("grups", user.getGrup().getgrupName());
-            
+                
+                logger.info("Checkpoint 3");
                 JSONObject quotaJson = new JSONObject();
+
+                logger.info("Checkpoint 4");
                 quotaJson.put("total", user.getPla().getQuota());
                 quotaJson.put("consumida", user.getPla().getQuota() - user.getQuota());
                 quotaJson.put("disponible", user.getQuota());
+                
+                logger.info("Checkpoint 5");
                 userJson.put("quota", quotaJson);
             
                 // Add the userJson object to the dataList array
