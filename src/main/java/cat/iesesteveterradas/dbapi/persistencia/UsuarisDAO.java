@@ -212,12 +212,15 @@ public class UsuarisDAO {
             Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE telefon = :telefon", Usuaris.class);
             query.setParameter("telefon", telefon);
             usuari = query.uniqueResult();
-            usuari.setPla(pla);
-            usuari.setQuota(pla.getQuota());
-            logger.info("Before commiting to DB");
-            session.update(usuari); 
-            tx.commit();
-            logger.info("Pla de l'usuari canviat correctament a {}", usuari.getPla().getPlaName());
+            if (usuari != null) {
+                usuari.setPla(pla);
+                usuari.setQuota(pla.getQuota());
+                session.update(usuari); 
+                tx.commit();
+                logger.info("Pla de l'usuari canviat correctament a {}", usuari.getPla().getPlaName());
+            } else {
+                logger.error("Usuaris not found for telefon: {}", telefon);
+            }
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             logger.error("Error al canviar pla de l'usuari", e);
