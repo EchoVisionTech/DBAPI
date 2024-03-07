@@ -332,10 +332,8 @@ public class UsuarisResource {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"status\":\"ERROR\",\"message\":\"Un valor identificatiu de l'usuari es necessari.\"}").build();
             }
             Pla nouPla = UsuarisDAO.getNouPla(pla);
-            Usuaris usuari = UsuarisDAO.getUsuari(telefon);
+            Usuaris usuari = UsuarisDAO.canviarPlaUsuari(telefon, nouPla);
             Integer pastUsedQuota = usuari.getPla().getQuota() - usuari.getQuota();
-            
-            usuari = UsuarisDAO.canviarPlaUsuari(usuari, nouPla, pastUsedQuota);
             
             // Prepare the response with the new configuration
             JSONObject jsonResponse = new JSONObject();

@@ -203,15 +203,17 @@ public class UsuarisDAO {
     }
 
 
-    public static Usuaris canviarPlaUsuari(Usuaris usuari, Pla pla, Integer quotaRestant) {
+    public static Usuaris canviarPlaUsuari(String telefon, Pla pla) {
         Session session = SessionFactoryManager.getSessionFactory().openSession();
         Transaction tx = null;
+        Usuaris usuari = null;
         try {
             tx = session.beginTransaction();
-            logger.info("Before changing pla");
+            Query<Usuaris> query = session.createQuery("FROM Usuaris WHERE telefon = :telefon", Usuaris.class);
+            query.setParameter("telefon", telefon);
+            usuari = query.uniqueResult();
             usuari.setPla(pla);
-            logger.info("Before changing quota");
-            usuari.setQuota(pla.getQuota() - quotaRestant);
+            usuari.setQuota(pla.getQuota());
             logger.info("Before commiting to DB");
             session.update(usuari); 
             tx.commit();
