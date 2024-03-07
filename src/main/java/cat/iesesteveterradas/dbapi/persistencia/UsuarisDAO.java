@@ -208,8 +208,11 @@ public class UsuarisDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
+            logger.info("Before changing pla");
             usuari.setPla(pla);
+            logger.info("Before changing quota");
             usuari.setQuota(pla.getQuota() - quotaRestant);
+            logger.info("Before commiting to DB");
             session.update(usuari); 
             tx.commit();
             logger.info("Pla de l'usuari canviat correctament a {}", usuari.getPla().getPlaName());
