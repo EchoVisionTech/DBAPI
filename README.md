@@ -1,4 +1,4 @@
-# Enunciat de les fites PJ02-DBAPI #
+# EchoVisionTech #
 
 ### Preparació de la base de dades ###
 Podeu arrancar una instància de MySQL amb Docker
